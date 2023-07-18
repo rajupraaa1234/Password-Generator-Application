@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import {TestComponent} from '@components';
+import RootNavigator from '@navigation/RootNavigator';
 
 
 
@@ -19,7 +20,7 @@ import {TestComponent} from '@components';
 function App(): JSX.Element {
  
   return (
-    <TestComponent/>
+    <RootNavigator/>
   );
 }
 
