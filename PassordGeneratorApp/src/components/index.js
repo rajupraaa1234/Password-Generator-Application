@@ -1,6 +1,8 @@
 import TestComponent from "./TestComponent";
+import CustomButton from "./CustomButton";
 
 
 export {
-    TestComponent
+    TestComponent,
+    CustomButton,
 }
