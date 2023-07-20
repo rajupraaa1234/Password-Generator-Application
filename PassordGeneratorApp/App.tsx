@@ -8,11 +8,18 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  View,
+  LogBox,
 } from 'react-native';
 import {TestComponent} from '@components';
 import RootNavigator from '@navigation/RootNavigator';
+
+LogBox.ignoreLogs([
+  "No stops in gradient",
+  "ViewPropTypes will be removed",
+  "ColorPropType will be removed",
+  "RNGestureHandlerRootView will be removed",
+  "GestureHandlerRootView will be removed",
+]);
 
 
 
