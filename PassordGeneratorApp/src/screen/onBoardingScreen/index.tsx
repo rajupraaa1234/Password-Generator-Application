@@ -3,14 +3,15 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import SplashScreen from 'react-native-splash-screen'
 import CustomCarousel from 'react-native-snap-carousel';
 import { CustomButton, SlideComponent } from '@components';
+import { setAsValue } from '@utils';
+import {useStore} from '@mobx/hooks';
 
-const OnBoardingScreen = () => {
+const OnBoardingScreen = ({ navigation }) => {
   const [type, setType] = useState(0);
   const reF = useRef();
   const [buttonName, setButtonName] = useState('Next');
-  useEffect(() => {
-    SplashScreen.hide();
-  });
+  const {appStore} = useStore();
+  
   let data = ["1", "2", "3"];
   const renderItem = ({ item, index }) => {
     return (
@@ -18,7 +19,13 @@ const OnBoardingScreen = () => {
     )
   }
   const onClickNext = () => {
-    reF.current.snapToNext();
+    if (buttonName === 'Continue') {
+      setAsValue('skip',"1");
+     // appStore.setSkipped(true);
+      navigation.navigate('LoginScreen');
+    } else {
+      reF.current.snapToNext();
+    }
   }
 
   return (
@@ -41,7 +48,7 @@ const OnBoardingScreen = () => {
             setType(index);
             if (index === 2) {
               setButtonName("Continue");
-            }else{
+            } else {
               setButtonName("Next");
             }
           }}
