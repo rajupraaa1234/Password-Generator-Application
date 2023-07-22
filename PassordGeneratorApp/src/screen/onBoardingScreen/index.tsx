@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import SplashScreen from 'react-native-splash-screen'
+import React, { useState, useRef } from "react";
+import { View, StyleSheet, Dimensions } from 'react-native';
 import CustomCarousel from 'react-native-snap-carousel';
 import { CustomButton, SlideComponent } from '@components';
 import { setAsValue } from '@utils';

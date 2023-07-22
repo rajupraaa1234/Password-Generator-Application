@@ -10,7 +10,7 @@ const CustomButton = (props: any) => {
         onClick
     } = props;
     return (
-        <TouchableOpacity style={[{ ...myStyle }, { width: width, height: height }, style.container]} onPress={() => { onClick() }}>
+        <TouchableOpacity style={[{ width: width, height: height }, style.container , { ...myStyle }]} onPress={() => { onClick() }}>
             <Text style={style.btnStyle}>{text}</Text>
         </TouchableOpacity>
     );
