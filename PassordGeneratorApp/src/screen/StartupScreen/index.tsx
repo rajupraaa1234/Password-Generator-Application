@@ -5,11 +5,13 @@ import { useStore } from '@mobx/hooks';
 
 const StartupScreen = () => {
     const { appStore } = useStore();
-
     useEffect(() => {
         (async () => {
             const skipped = await getAsValue('skip');
-            if (skipped === '1') {
+            const loggined = await getAsValue('currentUser');
+            if (loggined) {
+                appStore.setCurrentUser(loggined);
+            } else if (skipped === '1') {
                 appStore.setSkipped(true);
             }
         })();

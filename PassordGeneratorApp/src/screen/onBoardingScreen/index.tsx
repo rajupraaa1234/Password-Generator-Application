@@ -20,8 +20,7 @@ const OnBoardingScreen = ({ navigation }) => {
   const onClickNext = () => {
     if (buttonName === 'Continue') {
       setAsValue('skip',"1");
-     // appStore.setSkipped(true);
-      navigation.navigate('LoginScreen');
+      navigation.replace('LoginScreen');
     } else {
       reF.current.snapToNext();
     }

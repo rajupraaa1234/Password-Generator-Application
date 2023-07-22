@@ -2,6 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnBoardingScreen from '../screen/onBoardingScreen';
 import LoginScreen from '../screen/Login/LoginScreen';
+import HomeScreen from '../screen/HomeScreen/HomeScreen';
 import { useStore } from '@mobx/hooks';
 
 
@@ -27,4 +28,17 @@ export const LoginNavigator = (props: any) => {
     )
 }
 
-export default LoginNavigator;
+const DashboardStackNavigator = createNativeStackNavigator();
+export const DashBoardNavigator = () => {
+    return (
+        <DashboardStackNavigator.Navigator>
+            <DashboardStackNavigator.Screen
+                name='HomeScreen'
+                component={HomeScreen}
+            />
+        </DashboardStackNavigator.Navigator>
+    )
+}
+
+
+

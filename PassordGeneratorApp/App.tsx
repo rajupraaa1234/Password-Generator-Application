@@ -10,24 +10,21 @@ import {
   StyleSheet,
   LogBox,
 } from 'react-native';
-import {TestComponent} from '@components';
+import { TestComponent } from '@components';
 import RootNavigator from '@navigation/RootNavigator';
+import { NativeBaseProvider } from 'native-base';
 
-LogBox.ignoreLogs([
-  "No stops in gradient",
-  "ViewPropTypes will be removed",
-  "ColorPropType will be removed",
-  "RNGestureHandlerRootView will be removed",
-  "GestureHandlerRootView will be removed",
-]);
+LogBox.ignoreAllLogs();
 
 
 
 
 function App(): JSX.Element {
- 
+
   return (
-    <RootNavigator/>
+    <NativeBaseProvider>
+      <RootNavigator />
+    </NativeBaseProvider>
   );
 }
 
