@@ -16,7 +16,7 @@ const LoginScreen = () => {
       <SafeAreaView style={style.container}>
         <ScrollView>
           <View >
-            <View style={{ marginTop: 10 }}>
+            <View style={{ marginTop: 30  ,  marginLeft: 5}}>
               <Text style={style.loginText}>{page == 0 ? 'Login' : 'SignUp'}</Text>
             </View>
             <View style={{ marginTop: 30 }}>
@@ -70,7 +70,10 @@ const style = StyleSheet.create({
     borderTopRightRadius: 30,
     backgroundColor: 'white',
     flexWrap: 'wrap',
-    padding: 30,
+    justifyContent:'center',
+    alignItems:'center',
+    alignContent:'center',
+   
   },
   BackgroundStyle: {
     height: '33%',
