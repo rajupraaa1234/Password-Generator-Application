@@ -31,7 +31,11 @@ export const LoginNavigator = (props: any) => {
 const DashboardStackNavigator = createNativeStackNavigator();
 export const DashBoardNavigator = () => {
     return (
-        <DashboardStackNavigator.Navigator>
+        <DashboardStackNavigator.Navigator
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
             <DashboardStackNavigator.Screen
                 name='HomeScreen'
                 component={HomeScreen}

@@ -1,17 +1,44 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import React, { useState, useContext } from "react";
+import { View, Text, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Tracker } from '@images';
 import TextInput from "react-native-text-input-interactive";
 import { CustomButton } from '@components';
 import { STRING } from '@constant';
+import { useNavigation } from '@react-navigation/native';
 import { Toast } from "native-base";
+import { useStore } from '@mobx/hooks';
+import { AuthContext } from '@context/auth-context';
+import { observer } from 'mobx-react';
 import { setAsValue, getAsValue } from '@utils';
 
-const LoginScreen = () => {
+const LoginScreen = (props: any) => {
   const [page, setPage] = useState(0);    // 0 for Login , 1 for Signup
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [PageButton, setPageButton] = useState(false);
+  const [submitBtn, setSubmitBtn] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const navigation = useNavigation();
+  const { appStore } = useStore();
+  const auth = useContext(AuthContext);
 
+  const onStart = () => {
+    setLoader(true);
+    setPageButton(true);
+    setSubmitBtn(true);
+  }
+
+  const onEnd = () => {
+    setLoader(false);
+    setPageButton(false);
+    setSubmitBtn(false);
+  }
+
+  const showLoader = () => {
+    setTimeout(() => {
+      onEnd();
+    }, 1000);
+  }
 
   const login = async () => {
     if (username.length > 3 && password.length > 3) {
@@ -19,20 +46,25 @@ const LoginScreen = () => {
       if (user) {
         const pass = JSON.parse(user).password;
         if (pass !== password) {
+          onEnd();
           Toast.show({
             id: 11,
             description: "Invalid password, please enter valid password",
             placement: "bottom",
           });
         } else {
+          showLoader();
           await setAsValue("currentUser", username);
+          auth.login();
           Toast.show({
             id: 14,
             description: "Login successfully...",
             placement: "bottom",
           });
+          appStore.setCurrentUser(username);
         }
       } else {
+        onEnd();
         if (!Toast.isActive(12)) {
           Toast.show({
             id: 12,
@@ -42,6 +74,7 @@ const LoginScreen = () => {
         }
       }
     } else {
+      onEnd();
       if (!Toast.isActive(11)) {
         Toast.show({
           id: 11,
@@ -60,6 +93,7 @@ const LoginScreen = () => {
       };
       const user = await getAsValue(username);
       if (user) {
+        onEnd();
         if (!Toast.isActive(16)) {
           Toast.show({
             id: 16,
@@ -68,6 +102,7 @@ const LoginScreen = () => {
           });
         }
       } else {
+        showLoader();
         await setAsValue(username, JSON.stringify(newUser));
         if (!Toast.isActive(15)) {
           Toast.show({
@@ -78,6 +113,7 @@ const LoginScreen = () => {
         }
       }
     } else {
+      onEnd();
       if (!Toast.isActive(13)) {
         Toast.show({
           id: 13,
@@ -89,6 +125,7 @@ const LoginScreen = () => {
   }
 
   const onSubmit = () => {
+    onStart();
     if (page == 0) {
       login();
     } else {
@@ -116,10 +153,11 @@ const LoginScreen = () => {
                 width={Dimensions.get('screen').width - 38}
                 height={45}
                 onClick={() => { onSubmit() }}
+                disabled={submitBtn}
                 text={page == 0 ? 'Login' : 'SignUp'}
               />
             </View>
-            <TouchableOpacity style={{ marginTop: 10, marginLeft: 5 }} onPress={() => {
+            <TouchableOpacity disabled={PageButton} style={{ marginTop: 10, marginLeft: 5 }} onPress={() => {
               if (page === 0) {
                 setPage(1);
               } else {
@@ -131,9 +169,10 @@ const LoginScreen = () => {
               <Text style={{ color: 'blue' }}>{page == 0 ? "Don't have an account ?" : 'Do you have an account ?'}</Text>
             </TouchableOpacity>
           </View>
+          <ActivityIndicator animating={loader} size="large" color="#0000ff" />
         </ScrollView>
       </SafeAreaView>
-      <View style={{ position: 'absolute', bottom: 0, marginBottom: 50, justifyContent: 'center', alignSelf: 'center' }}>
+      <View style={style.instructionStyle}>
         <Text style={{ textAlign: 'center', color: 'gray' }}>
           {STRING.SECOND}
         </Text>
@@ -172,6 +211,13 @@ const style = StyleSheet.create({
     marginBottom: 50,
     justifyContent: 'center',
     alignSelf: 'center',
+  },
+  instructionStyle: {
+    position: 'absolute',
+    bottom: 0,
+    marginBottom: 50,
+    justifyContent: 'center',
+    alignSelf: 'center'
   }
 })
-export default LoginScreen;
+export default observer(LoginScreen);

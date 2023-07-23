@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   LogBox,
@@ -13,17 +13,35 @@ import {
 import { TestComponent } from '@components';
 import RootNavigator from '@navigation/RootNavigator';
 import { NativeBaseProvider } from 'native-base';
+import { AuthContext } from '@context/auth-context';
 
 LogBox.ignoreAllLogs();
 
 
 
 
-function App(): JSX.Element {
+const App = () => {
+  const [isAuth, setIsAuth] = useState(false);
+
+  const login = () => {
+    console.log(`login ------> login{}`)
+    setIsAuth(true);
+  }
+
+  const logout = () => {
+    setIsAuth(false);
+  }
 
   return (
     <NativeBaseProvider>
-      <RootNavigator />
+      <AuthContext.Provider
+        value={{
+          isAuth,
+          login,
+          logout,
+        }}>
+        <RootNavigator />
+      </AuthContext.Provider>
     </NativeBaseProvider>
   );
 }
