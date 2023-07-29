@@ -5,19 +5,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Header = (props:any) => {
-    const {name , style , leftIcon , rightIcon } = props;
+    const {name , style , leftIcon , rightIcon , leftClick , rightClick } = props;
 
     return (
       <View>
         <View style={[Mystyle.container , {...style}]}>
-            <TouchableOpacity style={{alignItems:'flex-start' ,marginLeft:20 }}>
-                <Icon name="user" size={30} color="gray" />
+            <TouchableOpacity onPress={leftClick} style={{alignItems:'flex-start' ,marginLeft:20 }}>
+                <Icon name={leftIcon} size={30} color="gray" />
             </TouchableOpacity>
             <View style={{alignItems:'center' , }}>
                 <Text style={{fontSize:20 , fontWeight:'500'}}>{name}</Text>
             </View>
-            <TouchableOpacity style={{alignItems:'flex-end' , marginRight:20}}>
-                <Icon name="plus" size={30} color="gray" />
+            <TouchableOpacity onPress={rightClick} style={{alignItems:'flex-end' , marginRight:20}}>
+                <Icon name={rightIcon} size={30} color="gray" />
             </TouchableOpacity>
         </View>
           <View style={{height:1,backgroundColor:'#D3D3D3',width:'100%'}}/>
@@ -41,6 +41,10 @@ const Mystyle = StyleSheet.create({
 
 Header.defaultProps = {
    name :  "Password",
+   leftIcon : 'user',
+   rightIcon : 'plus',
+   leftClick : ()=> {},
+   rightClick : ()=> {},
 }
 
 export default Header;
