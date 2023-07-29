@@ -19,7 +19,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const LoginStackNavigator = createNativeStackNavigator();
 export const LoginNavigator = (props: any) => {
     const { appStore } = useStore();
-    console.log(`LoginNavigator --------> ${appStore.skipped}`);
     const initialRoute = appStore.skipped ? 'LoginScreen' : 'onBoardingScreen';
     return (
         <LoginStackNavigator.Navigator
@@ -102,7 +101,7 @@ export const DashBoardNavigator = () => {
                         height: 50,
                     }
                 }} />
-            <Tab.Screen name={'SearchScreen'} component={SearchScreen}
+            <Tab.Screen name={'Search'} component={SearchScreen}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
@@ -115,7 +114,7 @@ export const DashBoardNavigator = () => {
                         //  backgroundColor : 'rgba(34,36,40,1)'
                     }
                 }} />
-            <Tab.Screen name={'SettingScreen'} component={SettingScreen}
+            <Tab.Screen name={'Setting'} component={SettingScreen}
                 options={{
                     headerShown: false,
                     tabBarIcon: ({ color, size }) => (
