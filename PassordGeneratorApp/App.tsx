@@ -22,14 +22,20 @@ LogBox.ignoreAllLogs();
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
+  const [isProfileClick, setProfileClick] = useState(false);
 
   const login = () => {
-    console.log(`login ------> login{}`)
     setIsAuth(true);
   }
 
   const logout = () => {
     setIsAuth(false);
+  }
+  const onProfileClick = () =>{
+    setProfileClick(true);
+  } 
+  const onBackClick = () => {
+    setProfileClick(false);
   }
 
   return (
@@ -39,6 +45,9 @@ const App = () => {
           isAuth,
           login,
           logout,
+          onProfileClick,
+          isProfileClick,
+          onBackClick,
         }}>
         <RootNavigator />
       </AuthContext.Provider>

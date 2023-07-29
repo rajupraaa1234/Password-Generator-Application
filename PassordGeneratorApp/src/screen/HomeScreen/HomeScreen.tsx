@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, SectionList, SafeAreaView, Dimensions, Image, StyleSheet } from 'react-native';
 import { emptyPasswordData } from '@utils';
 import { Header } from '@components';
 import { EmptyFour } from '@images';
 import CardView from 'react-native-cardview'
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon1 from 'react-native-vector-icons/Feather';
-
+import { useStore } from '@mobx/hooks';
+import { AuthContext } from '@context/auth-context';
 
 
 const HomeScreen = () => {
+  const auth = useContext(AuthContext);
+  const { appStore } = useStore();
+  const navigation = useNavigation();
   const DATA = [
     {
       title: 'Main dishes',
@@ -28,6 +33,10 @@ const HomeScreen = () => {
       data: ['Pizza', 'Burger', 'Risotto'],
     },
   ];
+
+  useEffect(() => {
+    appStore.setSkipped(true);
+  }, []);
   const renderItem = (data: any) => {
     return (
       <CardView
@@ -73,10 +82,14 @@ const HomeScreen = () => {
 
   };
 
+  const onLeftIconClick = () => {
+    auth.onProfileClick();
+    navigation.navigate('ProfileScreen');
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View>
-        <Header name={'Password'} leftIcon="user" rightIcon="plus" leftClick={() => { console.log(`left`) }} rightClick={() => { console.log(`right`) }} />
+        <Header name={'Password'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { console.log(`right`) }} />
         <View style={{ marginHorizontal: 10, marginBottom: 170 }}>
           <SectionList
             sections={emptyPasswordData}
