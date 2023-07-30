@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useCallback, useState } from "react";
-import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet , TouchableOpacity } from 'react-native';
 import { emptyPasswordData, getAsValue } from '@utils';
 import { Header } from '@components';
 import { EmptyFour } from '@images';
 import CardView from 'react-native-cardview'
 import { useNavigation } from '@react-navigation/native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Icon1 from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,6 +16,7 @@ import { AuthContext } from '@context/auth-context';
 const HomeScreen = () => {
   const auth = useContext(AuthContext);
   const { appStore } = useStore();
+  const [copiedText, setCopiedText] = useState('');
   const navigation = useNavigation();
   const [loader, setLoader] = useState(false);
   const [listData, setListData] = useState(emptyPasswordData);
@@ -73,6 +75,16 @@ const HomeScreen = () => {
       setListData(emptyPasswordData)
     }
   }
+
+  const copyToClipboard = (password:string) => {
+    Clipboard.setString(password);
+  }
+
+const fetchCopiedText = async () => {
+    const text = await Clipboard.getString();
+    setCopiedText(text);
+};
+
   const renderItem = (data: any) => {
     return (
       <CardView
@@ -83,7 +95,7 @@ const HomeScreen = () => {
         cardMaxElevation={5}
         style={style.cardContainer}
         cornerRadius={8}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
             <Icon name="amazon" size={40} color="white" />
           </View>
@@ -93,9 +105,9 @@ const HomeScreen = () => {
               <Text style={{ color: 'white', fontSize: 15 }}>{data.item.password}</Text>
             </View>
           </View>
-          <View>
+          <TouchableOpacity onPress={()=>{copyToClipboard(data.item.password)}}>
             <Icon1 name="copy" size={40} color="white" />
-          </View>
+          </TouchableOpacity>
         </View>
 
       </CardView>
