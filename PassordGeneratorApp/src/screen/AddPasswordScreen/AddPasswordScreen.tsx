@@ -1,15 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, BackHandler, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Header, CustomButton , DropdownComponent } from '@components';
+import { Header, CustomButton, DropdownComponent } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import TextInput from "react-native-text-input-interactive";
 import Icon1 from 'react-native-vector-icons/Feather';
 import CheckBox from '@react-native-community/checkbox';
 import { AuthContext } from '@context/auth-context';
 import { Toast } from "native-base";
-import { generatePassword , dropDownData} from '@utils';
+import { generatePassword, dropDownData, newPasswordList } from '@utils';
+import { useStore } from '@mobx/hooks';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Slider from "react-native-slider";
+import { setAsValue, getAsValue, getType } from '@utils';
 
 
 const AddPasswordScreen = () => {
@@ -26,7 +28,8 @@ const AddPasswordScreen = () => {
     const [copiedText, setCopiedText] = useState('');
     const [loader, setLoader] = useState(false);
     const [fisrt, setFirst] = useState(true);
-    const [type , setType] = useState('');
+    const [type, setType] = useState('');
+    const { appStore } = useStore();
 
 
 
@@ -38,11 +41,11 @@ const AddPasswordScreen = () => {
 
     const renderLabel = () => {
         if (value || isFocus) {
-          return (
-            <Text style={[styles.label, isFocus && { color: 'blue' }]}>
-              Dropdown label
-            </Text>
-          );
+            return (
+                <Text style={[styles.label, isFocus && { color: 'blue' }]}>
+                    Dropdown label
+                </Text>
+            );
         }
         return null;
     };
@@ -131,8 +134,79 @@ const AddPasswordScreen = () => {
         showLoader();
         setGenerated(generatedPassword);
     }
-    const onTypeSelect = (item) =>{
+    const onTypeSelect = (item) => {
         setType(item.label);
+    }
+
+    const saveData = async (data: any, isData: boolean) => {
+        const user = appStore.currentUser;
+        let userData = await getAsValue(`${user}`);
+        let newUserData = data;
+        const currentData = {
+            site: siteName,
+            email: email,
+            password: generated,
+            length: value
+        }
+
+        let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = newUserData;
+        let currType = getType(type);
+        if (currType == 'Pririty') {
+            Pririty.data.push(currentData);
+        } else if (currType == 'Entertainment') {
+            Entertainment.data.push(currentData);
+        } else if (currType == 'Study') {
+            Study.data.push(currentData);
+        } else if (currType == 'Others') {
+            Others.data.push(currentData);
+        } else if (currType == 'ECommerce') {
+            ECommerce.data.push(currentData);
+        } else if (currType == 'SocialMedia') {
+            SocialMedia.data.push(currentData);
+        } else {
+            Payment.data.push(currentData);
+        }
+        let newUpdatedUserData = JSON.parse(userData);
+        Object.assign(newUpdatedUserData, { data: newUserData });
+        await setAsValue(`${user}`, JSON.stringify(newUpdatedUserData));
+    }
+
+    const onSaveClick = async () => {
+        if (siteName.length == 0 || email.length == 0 || generated.length == 0 || type.length == 0) {
+            if (!Toast.isActive(20)) {
+                Toast.show({
+                    id: 20,
+                    description: "Please generate password then save & use",
+                    placement: "bottom",
+                });
+            }
+            return;
+        }
+        const user = appStore.currentUser;
+        let userData = await getAsValue(`${user}`);
+        userData = JSON.parse(userData)
+
+        let { data } = userData;
+        if (data) {
+            saveData(data, true);
+        } else {
+            let freshData = JSON.parse(JSON.stringify(newPasswordList));
+            saveData(freshData, false);
+        }
+        if (!Toast.isActive(21)) {
+            Toast.show({
+                id: 21,
+                description: "your generated password has been saved in your cart . It will reflect on home screen",
+                placement: "bottom",
+            });
+        }
+    }
+    const getData = async () => {
+        const user = appStore.currentUser;
+        let userData = await getAsValue(`${user}`);
+
+
+        console.log(`newPasswordList ------> ${userData}`);
     }
     return (
         <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -163,11 +237,11 @@ const AddPasswordScreen = () => {
                     />
                     <Text>Value of slider is : {value}</Text>
                 </View>
-                <View style={{ marginLeft: 15, marginTop: 20 ,flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
+                <View style={{ marginLeft: 15, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={{ color: 'gray', fontSize: 20 }}>
                         Length : {value}
                     </Text>
-                    <DropdownComponent data={dropDownData} style={{height : 40,width : 150 , color:'blue'}} name={'select type'} onChanged={onTypeSelect}/>
+                    <DropdownComponent data={dropDownData} style={{ height: 40, width: 150, color: 'blue' }} name={'select type'} onChanged={onTypeSelect} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={style.CheckBoxStyle}>
@@ -219,7 +293,7 @@ const AddPasswordScreen = () => {
                     <CustomButton
                         width={150}
                         height={45}
-                        onClick={() => { }}
+                        onClick={() => { onSaveClick() }}
                         disabled={false}
                         myStyle={{ marginRight: 10, padding: 5 }}
                         text={'Save Password'}
@@ -233,7 +307,7 @@ const AddPasswordScreen = () => {
                     <CustomButton
                         width={'100%'}
                         height={45}
-                        onClick={() => { }}
+                        onClick={() => { getData() }}
                         disabled={false}
                         myStyle={{ marginLeft: 20, marginRight: 20 }}
                         text={'Add Manually'}

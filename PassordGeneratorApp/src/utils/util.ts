@@ -34,15 +34,57 @@ const emptyPasswordData = [
   },
 ];
 
+const newPasswordList = {
+  Pririty : {
+      title : 'Pririty',
+      data : []
+  },
+  Entertainment : {
+      title : 'Entertainment',
+      data : []
+  },
+  Study : {
+      title : 'Study',
+      data : []
+  },
+  Others : {
+      title : 'Others',
+      data : []
+  },
+  ECommerce : {
+      title : 'E-Commerce',
+      data : []
+  },
+  SocialMedia : {
+      title : 'Social Media',
+      data : []
+  },
+  Payment : {
+      title : 'Payment',
+      data : []
+  }
+};
+
 const dropDownData = [
   { label: 'Pririty', value: '1' },
   { label: 'Entertainment', value: '2' },
   { label: 'Study', value: '3' },
   { label: 'Social Media', value: '4' },
-  { label: 'E-Commerce5', value: '5' },
+  { label: 'E-Commerce', value: '5' },
   { label: 'Payment', value: '6' },
   { label: 'Others', value: '7' },
 ];
+
+const getType = (data:string) => {
+      data = `${data}`;
+      if(data == 'Pririty') return 'Pririty';
+      if(data == 'Entertainment') return 'Entertainment';
+      if(data == 'Study') return  'Study';
+      if(data == 'Social Media') return 'SocialMedia';
+      if(data == 'E-Commerce') return 'ECommerce';
+      if(data == 'Payment') return 'Payment';
+      if(data == 'Others') return 'Others';
+}
 
 const UppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const LowercaseChars = "abcdefghijklmnopqrstuvwxyz";
@@ -83,4 +125,6 @@ export {
   emptyPasswordData,
   generatePassword,
   dropDownData,
+  getType,
+  newPasswordList,
 }
