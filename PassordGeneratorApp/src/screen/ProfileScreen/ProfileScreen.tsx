@@ -33,7 +33,7 @@ const ProfileScreen = () => {
 
     return (
         <View style={{ flex: 1, flexDirection: 'column' }}>
-            <Header leftIcon={'backward'} leftClick={handleBackButtonClick} name={'Profile'} />
+            <Header leftIcon={'backward'} leftClick={handleBackButtonClick} name={'Profile'} isRight = {false} isLeft={true} />
             <View style={{ position: 'relative', flex: 1 }}>
                 <TouchableOpacity style={style.LogoutBtnContainer} onPress={logout}>
                     <Text style={{ color: 'black', fontSize: 20 }}>Logout</Text>

@@ -86,10 +86,15 @@ const HomeScreen = () => {
     auth.onProfileClick();
     navigation.navigate('ProfileScreen');
   }
+
+  const onRightIconClick = () => {
+    auth.onProfileClick();
+    navigation.navigate('AddPasswordScreen');
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <View>
-        <Header name={'Password'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { console.log(`right`) }} />
+        <Header name={'Password'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => {onRightIconClick()}} />
         <View style={{ marginHorizontal: 10, marginBottom: 170 }}>
           <SectionList
             sections={emptyPasswordData}

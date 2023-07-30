@@ -5,19 +5,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Header = (props:any) => {
-    const {name , style , leftIcon , rightIcon , leftClick , rightClick } = props;
+    const {name , style , leftIcon , rightIcon , leftClick , rightClick , isLeft , isRight  } = props;
 
     return (
       <View>
         <View style={[Mystyle.container , {...style}]}>
             <TouchableOpacity onPress={leftClick} style={{alignItems:'flex-start' ,marginLeft:20 }}>
-                <Icon name={leftIcon} size={30} color="gray" />
+                {isLeft && <Icon name={leftIcon} size={30} color="gray" />}
             </TouchableOpacity>
-            <View style={{alignItems:'center' , }}>
+            <View style={{alignItems:'center' , justifyContent:'center' , alignContent:'center' ,alignSelf:'center', }}>
                 <Text style={{fontSize:20 , fontWeight:'500'}}>{name}</Text>
             </View>
             <TouchableOpacity onPress={rightClick} style={{alignItems:'flex-end' , marginRight:20}}>
-                <Icon name={rightIcon} size={30} color="gray" />
+                {isRight && <Icon name={rightIcon} size={30} color="gray" />}
             </TouchableOpacity>
         </View>
           <View style={{height:1,backgroundColor:'#D3D3D3',width:'100%'}}/>
@@ -43,6 +43,8 @@ Header.defaultProps = {
    name :  "Password",
    leftIcon : 'user',
    rightIcon : 'plus',
+   isLeft : true,
+   isRight : true,
    leftClick : ()=> {},
    rightClick : ()=> {},
 }

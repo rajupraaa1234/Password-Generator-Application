@@ -1,5 +1,5 @@
 import { setAsValue, getAsValue, MultigetAsValue, multiRemoveValue, clearStorage } from "./asyncStorage";
-import { PasswordType , emptyPasswordData } from "./util";
+import { PasswordType , emptyPasswordData, generatePassword , dropDownData } from "./util";
 
 export {
     setAsValue,
@@ -8,5 +8,7 @@ export {
     multiRemoveValue,
     clearStorage,
     PasswordType,
-    emptyPasswordData
+    emptyPasswordData,
+    generatePassword,
+    dropDownData,
 }

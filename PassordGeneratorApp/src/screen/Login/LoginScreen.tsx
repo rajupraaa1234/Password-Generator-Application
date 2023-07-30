@@ -4,7 +4,6 @@ import { Tracker } from '@images';
 import TextInput from "react-native-text-input-interactive";
 import { CustomButton } from '@components';
 import { STRING } from '@constant';
-import { useNavigation } from '@react-navigation/native';
 import { Toast } from "native-base";
 import { useStore } from '@mobx/hooks';
 import { AuthContext } from '@context/auth-context';
@@ -18,7 +17,6 @@ const LoginScreen = (props: any) => {
   const [PageButton, setPageButton] = useState(false);
   const [submitBtn, setSubmitBtn] = useState(false);
   const [loader, setLoader] = useState(false);
-  const navigation = useNavigation();
   const { appStore } = useStore();
   const auth = useContext(AuthContext);
 

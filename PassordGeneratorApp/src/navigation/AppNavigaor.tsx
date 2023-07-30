@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import User from 'react-native-vector-icons/EvilIcons';
 import Setting from 'react-native-vector-icons/AntDesign';
+import AddPasswordScreen from '../screen/AddPasswordScreen/AddPasswordScreen';
 import { AuthContext } from '@context/auth-context';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -56,6 +57,11 @@ const HomeStack = () => {
            <DashboardStackNavigator.Screen
                 name="ProfileScreen"
                 component={ProfileScreen}
+            />
+            
+            <DashboardStackNavigator.Screen
+                name="AddPasswordScreen"
+                component={AddPasswordScreen}
             />
         </LoginStackNavigator.Navigator>
     )
