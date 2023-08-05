@@ -182,6 +182,18 @@ const AddPasswordScreen = () => {
             }
             return;
         }
+        let isValid = await isAlreadySaved();
+
+        if (isValid) {
+            if (!Toast.isActive(30)) {
+                Toast.show({
+                    id: 30,
+                    description: "This password already saved!",
+                    placement: "bottom",
+                });
+            }
+            return;
+        }
         const user = appStore.currentUser;
         let userData = await getAsValue(`${user}`);
         userData = JSON.parse(userData)
@@ -201,13 +213,43 @@ const AddPasswordScreen = () => {
             });
         }
     }
-    const getData = async () => {
+    const isAlreadySaved = async () => {
         const user = appStore.currentUser;
         let userData = await getAsValue(`${user}`);
-
-
-        console.log(`newPasswordList ------> ${userData}`);
+        let { data } = JSON.parse(userData);
+        let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
+        const currentData = {
+            site: siteName,
+            email: email,
+            password: generated,
+            length: value
+        }
+        let isSame = false;
+        let enteredType = [];
+        let currType = getType(type);
+        if (currType == 'Pririty') {
+            enteredType = Pririty;
+        } else if (currType == 'Entertainment') {
+            enteredType = Entertainment;
+        } else if (currType == 'Study') {
+            enteredType = Study;
+        } else if (currType == 'Others') {
+            enteredType = Others;
+        } else if (currType == 'ECommerce') {
+            enteredType = ECommerce;
+        } else if (currType == 'SocialMedia') {
+            enteredType = SocialMedia;
+        } else {
+            enteredType = Payment;
+        }
+        enteredType.data.map((item, index) => {
+            if (JSON.stringify(currentData) === JSON.stringify(item)) {
+                isSame = true;
+            }
+        })
+        return isSame;
     }
+
     return (
         <View style={{ flex: 1, flexDirection: 'column' }}>
             <Header leftIcon={'backward'} leftClick={() => { onLeftIconClick() }} name="Create Password" isRight={false} isLeft={true} />
@@ -307,7 +349,7 @@ const AddPasswordScreen = () => {
                     <CustomButton
                         width={'100%'}
                         height={45}
-                        onClick={() => { getData() }}
+                        onClick={() => { }}
                         disabled={false}
                         myStyle={{ marginLeft: 20, marginRight: 20 }}
                         text={'Add Manually'}
