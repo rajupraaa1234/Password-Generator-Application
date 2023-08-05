@@ -1,3 +1,4 @@
+import { getAsValue } from '@utils';
 const PasswordType = () => {
   const passwordType = ["Pririty", "Entertainment", "Study", "Social Media", "E-Commerce", "Payment", "Others"];
   return passwordType;
@@ -119,6 +120,87 @@ const generatePassword = (passwordLength: any, isUppercaseChars: any, isLowercas
   return shuffledPassword;
 };
 
+const checkPasswordStrength = (password:string) => {
+  var strength = 0;
+  var tips = "";
+
+  if (password.length < 8) {
+    tips += "Make the password longer. ";
+  } else {
+    strength += 1;
+  }
+
+  if (password.match(/[a-z]/) && password.match(/[A-Z]/)) {
+    strength += 1;
+  } else {
+    tips += "Use both lowercase and uppercase letters. ";
+  }
+
+  // Check for numbers
+  if (password.match(/\d/)) {
+    strength += 1;
+  } else {
+    tips += "Include at least one number. ";
+  }
+
+  // Check for special characters
+  if (password.match(/[^a-zA-Z\d]/)) {
+    strength += 1;
+  } else {
+    tips += "Include at least one special character. ";
+  }
+
+  // 1 for weak 
+  // 2 for Medium difficulty
+  // 3 for Dificult
+  // 4 for Exactly Difficult
+  // Return results
+  if (strength < 2) {
+    return 1;
+  } else if (strength === 2) {
+    return 2;
+  } else if (strength === 3) {
+    return 3;
+  } else {
+    return 4;
+  }
+}
+
+const countPasswordStregth = (arr,obj) =>{
+    arr.map((item,index)=>{
+        let strength = checkPasswordStrength(item.password);
+        if(strength == 1) {
+          obj.risk++;
+        }else if(strength == 2 ){
+          obj.weak++;
+        }else{
+          obj.safe++;
+        }
+    });
+}
+
+const getAllPasswordStrength = async (appStore) =>{
+    const user = appStore.currentUser;
+    let userData = await getAsValue(`${user}`);
+    let { data } = JSON.parse(userData);
+    let countObj = {
+      safe : 0,
+      weak : 0,
+      risk : 0,
+    }
+    if (data) {
+      let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
+      countPasswordStregth(Pririty.data,countObj);
+      countPasswordStregth(Entertainment.data,countObj);
+      countPasswordStregth(Study.data,countObj);
+      countPasswordStregth(Others.data,countObj);
+      countPasswordStregth(ECommerce.data,countObj);
+      countPasswordStregth(SocialMedia.data,countObj);
+      countPasswordStregth(Payment.data,countObj);
+    }
+    return countObj;
+}
+
 
 export {
   PasswordType,
@@ -127,4 +209,6 @@ export {
   dropDownData,
   getType,
   newPasswordList,
+  checkPasswordStrength,
+  getAllPasswordStrength,
 }

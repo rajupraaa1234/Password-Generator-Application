@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, BackHandler, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Header, CustomButton, DropdownComponent , CustomPopup } from '@components';
+import { Header, CustomButton, DropdownComponent, CustomPopup } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import TextInput from "react-native-text-input-interactive";
 import Icon1 from 'react-native-vector-icons/Feather';
@@ -28,9 +28,9 @@ const AddPasswordScreen = () => {
     const [copiedText, setCopiedText] = useState('');
     const [loader, setLoader] = useState(false);
     const [fisrt, setFirst] = useState(true);
-    const [isVisible,setVisible] = useState(false);
+    const [isVisible, setVisible] = useState(false);
     const [type, setType] = useState('');
-    const [manualyPassword , setManualPassword] = useState('');
+    const [manualyPassword, setManualPassword] = useState('');
     const { appStore } = useStore();
 
 
@@ -218,44 +218,49 @@ const AddPasswordScreen = () => {
         const user = appStore.currentUser;
         let userData = await getAsValue(`${user}`);
         let { data } = JSON.parse(userData);
-        let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
-        const currentData = {
-            site: siteName,
-            email: email,
-            password: generated,
-            length: value
-        }
         let isSame = false;
-        let enteredType = [];
-        let currType = getType(type);
-        if (currType == 'Pririty') {
-            enteredType = Pririty;
-        } else if (currType == 'Entertainment') {
-            enteredType = Entertainment;
-        } else if (currType == 'Study') {
-            enteredType = Study;
-        } else if (currType == 'Others') {
-            enteredType = Others;
-        } else if (currType == 'ECommerce') {
-            enteredType = ECommerce;
-        } else if (currType == 'SocialMedia') {
-            enteredType = SocialMedia;
-        } else {
-            enteredType = Payment;
-        }
-        enteredType.data.map((item, index) => {
-            if (JSON.stringify(currentData) === JSON.stringify(item)) {
-                isSame = true;
+
+        if (data) {
+            let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
+            const currentData = {
+                site: siteName,
+                email: email,
+                password: generated,
+                length: value
             }
-        })
+
+            let enteredType = [];
+            let currType = getType(type);
+            if (currType == 'Pririty') {
+                enteredType = Pririty;
+            } else if (currType == 'Entertainment') {
+                enteredType = Entertainment;
+            } else if (currType == 'Study') {
+                enteredType = Study;
+            } else if (currType == 'Others') {
+                enteredType = Others;
+            } else if (currType == 'ECommerce') {
+                enteredType = ECommerce;
+            } else if (currType == 'SocialMedia') {
+                enteredType = SocialMedia;
+            } else {
+                enteredType = Payment;
+            }
+            enteredType.data.map((item, index) => {
+                if (JSON.stringify(currentData) === JSON.stringify(item)) {
+                    isSame = true;
+                }
+            })
+        }
+
         return isSame;
     }
-    const onPopupClose = () =>{
+    const onPopupClose = () => {
         setVisible(false);
         setManualPassword('');
     }
 
-    const onTextChanges =(value) =>{
+    const onTextChanges = (value) => {
         setManualPassword(value);
         setGenerated(value);
     }
@@ -295,7 +300,7 @@ const AddPasswordScreen = () => {
                     </Text>
                     <DropdownComponent data={dropDownData} style={{ height: 40, width: 150, color: 'blue' }} name={'select type'} onChanged={onTypeSelect} />
                 </View>
-                <CustomPopup isVisible={isVisible} onClick={onPopupClose} onTextChange={onTextChanges}/>
+                <CustomPopup isVisible={isVisible} onClick={onPopupClose} onTextChange={onTextChanges} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={style.CheckBoxStyle}>
                         <CheckBox

@@ -4,7 +4,7 @@ import SlideComponent from "./SlideComponent";
 import Header from "./Header";
 import DropdownComponent from './CustomDropDown';
 import { CustomPopup } from "./CustomPopup";
-
+import PieChartComponent from "./PieChartComponent";
 
 export {
     TestComponent,
@@ -13,4 +13,5 @@ export {
     Header,
     DropdownComponent,
     CustomPopup,
+    PieChartComponent,
 }
