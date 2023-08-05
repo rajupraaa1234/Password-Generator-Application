@@ -202,6 +202,19 @@ const getAllPasswordStrength = async (appStore) =>{
 }
 
 
+const getAllPasswordList = async (appStore:any) =>{
+  const user = appStore.currentUser;
+  let userData = await getAsValue(`${user}`);
+  let { data } = JSON.parse(userData);
+  let arr = [];
+  if(data) {
+    let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
+    arr = [...Pririty.data,...Entertainment.data,...Study.data,...Others.data,...ECommerce.data,...SocialMedia.data,...Payment.data]; 
+  }
+ return arr;
+}
+
+
 export {
   PasswordType,
   emptyPasswordData,
@@ -211,4 +224,5 @@ export {
   newPasswordList,
   checkPasswordStrength,
   getAllPasswordStrength,
+  getAllPasswordList,
 }

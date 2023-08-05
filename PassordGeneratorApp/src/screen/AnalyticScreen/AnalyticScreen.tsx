@@ -1,11 +1,16 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { Header, PieChartComponent } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '@context/auth-context';
+import { EmptyFour } from '@images';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAllPasswordStrength } from '@utils';
+import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength } from '@utils';
 import { useStore } from '@mobx/hooks';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon2 from 'react-native-vector-icons/AntDesign';
+
 
 
 const AnalyticScreen = () => {
@@ -14,12 +19,17 @@ const AnalyticScreen = () => {
     const { appStore } = useStore();
     const [countObj, setCount] = useState({});
     const [data, setData] = useState([]);
+    const [passwordData, setPasswordData] = useState([]);
 
     useFocusEffect(
         useCallback(() => {
+            userPasswordListData();
             fetchData();
+
         }, []),
     );
+
+
 
     const fetchData = async () => {
         let obj = await getAllPasswordStrength(appStore);
@@ -48,9 +58,35 @@ const AnalyticScreen = () => {
         setData(userData);
     }
 
-    const userPasswordListData = () =>{
-        
+    const userPasswordListData = async () => {
+        const data = await getAllPasswordList(appStore);
+        setPasswordData(data);
     }
+
+
+
+    const renderItem = (item, index) => {
+        const PassStrength = checkPasswordStrength(item.password);
+        const color = PassStrength == 2 ? '#EC9D3F' : PassStrength == 1 ? '#F00' : '#65D16D';
+        const name = PassStrength == 2 ? 'Weak' : PassStrength == 1 ? 'Risk' : 'Safe';
+        return (
+            <View style={[style.cardContainer, { borderColor: color }, index == passwordData.length - 1 ? { marginBottom: 90 } : { marginBottom: 0 }]}>
+                <View style={{ position: 'absolute', left: 0, marginLeft: 10 }}>
+                    <Icon1 name="security" color="black" size={30} />
+                    <Text>{name}</Text>
+                </View>
+                <View style={{ position: 'absolute' }}>
+                    <Text style={{ fontSize: 20 }}>{item.site}</Text>
+                    <Text style={{ fontSize: 15 }}>{item.email}</Text>
+                    <Text style={{ fontSize: 10 }}>{item.password}</Text>
+                </View>
+                <View style={{ right: 0, position: 'absolute', marginRight: 10 }}>
+                    <Icon2 name="right" color="gray" size={25} />
+                </View>
+            </View>
+        )
+    }
+
 
     const onLeftIconClick = () => {
         auth.onProfileClick();
@@ -71,8 +107,17 @@ const AnalyticScreen = () => {
         navigation.navigate('AddPasswordScreen');
     }
 
+    const renderEmptyView = () => {
+        return (
+            <View style={{ width: '95%', justifyContent: 'center', alignContent: 'center', alignSelf: 'center' }}>
+                <EmptyFour width={'100%'} height={220} />
+            </View>
+        );
+
+    }
+
     return (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{ flexDirection: 'column' }}>
             <Header name={'Security'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
             <PieChartComponent data={data} />
             <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-evenly' }}>
@@ -86,12 +131,29 @@ const AnalyticScreen = () => {
                     {getType(countObj?.risk, 'Risk')}
                 </View>
             </View>
-            <View style={{marginTop : 20}}>
+            <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 45 }}>
+                <Text style={{ fontSize: 20 }}>Analysis</Text>
+                <View>
+                    <Icon name="filter-outline" color={'black'} size={30} />
+                </View>
+            </View>
 
+            <View style={{ marginHorizontal: 30, marginTop: 15, justifyContent: 'center', alignContent: 'center', height: 400 }}>
+                <FlatList
+                    data={passwordData}
+                    renderItem={({ item, index }) => renderItem(item, index)}
+                    keyExtractor={(item, index) => `${index}`}
+                    showsHorizontalScrollIndicator={false}
+                    showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={renderEmptyView}
+                />
             </View>
         </View>
     )
+
+
 }
+
 
 const style = StyleSheet.create({
     boxContainer: {
@@ -102,7 +164,24 @@ const style = StyleSheet.create({
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    cardContainer: {
+        height: 80,
+        width: '95%',
+        flex: 1,
+        position: 'relative',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignContent: 'center',
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'gray',
+        margin: 10,
+
     }
-})
+
+});
+
 
 export default AnalyticScreen;
