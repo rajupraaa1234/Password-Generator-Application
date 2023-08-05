@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, BackHandler, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Header, CustomButton, DropdownComponent } from '@components';
+import { Header, CustomButton, DropdownComponent , CustomPopup } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import TextInput from "react-native-text-input-interactive";
 import Icon1 from 'react-native-vector-icons/Feather';
@@ -28,9 +28,10 @@ const AddPasswordScreen = () => {
     const [copiedText, setCopiedText] = useState('');
     const [loader, setLoader] = useState(false);
     const [fisrt, setFirst] = useState(true);
+    const [isVisible,setVisible] = useState(false);
     const [type, setType] = useState('');
+    const [manualyPassword , setManualPassword] = useState('');
     const { appStore } = useStore();
-
 
 
     function handleBackButtonClick() {
@@ -249,6 +250,15 @@ const AddPasswordScreen = () => {
         })
         return isSame;
     }
+    const onPopupClose = () =>{
+        setVisible(false);
+        setManualPassword('');
+    }
+
+    const onTextChanges =(value) =>{
+        setManualPassword(value);
+        setGenerated(value);
+    }
 
     return (
         <View style={{ flex: 1, flexDirection: 'column' }}>
@@ -285,6 +295,7 @@ const AddPasswordScreen = () => {
                     </Text>
                     <DropdownComponent data={dropDownData} style={{ height: 40, width: 150, color: 'blue' }} name={'select type'} onChanged={onTypeSelect} />
                 </View>
+                <CustomPopup isVisible={isVisible} onClick={onPopupClose} onTextChange={onTextChanges}/>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={style.CheckBoxStyle}>
                         <CheckBox
@@ -349,7 +360,7 @@ const AddPasswordScreen = () => {
                     <CustomButton
                         width={'100%'}
                         height={45}
-                        onClick={() => { }}
+                        onClick={() => { setVisible(true) }}
                         disabled={false}
                         myStyle={{ marginLeft: 20, marginRight: 20 }}
                         text={'Add Manually'}
