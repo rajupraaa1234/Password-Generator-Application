@@ -76,6 +76,15 @@ const dropDownData = [
   { label: 'Others', value: '7' },
 ];
 
+const searchType = [
+  { label: 'Password', value: '1' },
+  { label: 'Site Name', value: '2' },
+  { label: 'Username', value: '3' },
+  { label: 'Safe Password', value: '4' },
+  { label: 'Weak Password', value: '5' },
+  { label: 'Risk Password', value: '6' },
+];
+
 const getType = (data:string) => {
       data = `${data}`;
       if(data == 'Pririty') return 'Pririty';
@@ -225,4 +234,5 @@ export {
   checkPasswordStrength,
   getAllPasswordStrength,
   getAllPasswordList,
+  searchType,
 }
