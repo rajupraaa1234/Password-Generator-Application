@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
-import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Header, PieChartComponent } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '@context/auth-context';
@@ -20,12 +20,15 @@ const AnalyticScreen = () => {
     const [countObj, setCount] = useState({});
     const [data, setData] = useState([]);
     const [passwordData, setPasswordData] = useState([]);
+    const [order,setOrder] = useState(1);   // 1 for inc   // 2 for Dec
+    const [rotate,setRotate] = useState('0deg');
+
 
     useFocusEffect(
         useCallback(() => {
             userPasswordListData();
             fetchData();
-
+            onFilterClick();
         }, []),
     );
 
@@ -116,6 +119,30 @@ const AnalyticScreen = () => {
 
     }
 
+    const onFilterClick = () =>{
+            let risk = [];
+            let safe = [];
+            let weak = [];
+            passwordData.map((item)=>{
+                let str = checkPasswordStrength(item.password);
+                if(str == 1 ){
+                    risk.push(item);
+                }else if(str == 2){
+                    weak.push(item);
+                }else{
+                    safe.push(item);
+                }
+            });
+            if(order == 1){
+                setPasswordData([...safe,...weak,...risk]);
+                setRotate('0deg');
+            }else{
+                setPasswordData([...risk,...weak,...safe]);
+                setRotate('180deg');
+            }
+            setOrder(2/order);
+    }
+
     return (
         <View style={{ flexDirection: 'column' }}>
             <Header name={'Security'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
@@ -133,9 +160,9 @@ const AnalyticScreen = () => {
             </View>
             <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 45 }}>
                 <Text style={{ fontSize: 20 }}>Analysis</Text>
-                <View>
-                    <Icon name="filter-outline" color={'black'} size={30} />
-                </View>
+                <TouchableOpacity  onPress={onFilterClick}>
+                   <Icon style={{transform:[{rotate: rotate}]}} name="filter-outline" color={'black'} size={30} />
+                </TouchableOpacity>
             </View>
 
             <View style={{ marginHorizontal: 30, marginTop: 15, justifyContent: 'center', alignContent: 'center', height: 400 }}>
