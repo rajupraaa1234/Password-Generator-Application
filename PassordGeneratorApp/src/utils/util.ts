@@ -228,7 +228,7 @@ const isExpire = async () =>{
   let diff = Math.abs(Date.parse(lastime) - new Date());
   if(diff>0){
     let minutes = Math.floor(diff / 1000 / 60);
-    if(minutes>=1){
+    if(minutes>=10){
       return true;
     }else{
       await setAsValue('LastUpdatedTime',`${new Date()}`);
