@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useCallback, useState } from "react";
-import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet , TouchableOpacity } from 'react-native';
-import { emptyPasswordData, getAsValue } from '@utils';
+import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { emptyPasswordData, getAsValue, isExpire, setAsValue } from '@utils';
 import { Header } from '@components';
 import { EmptyFour } from '@images';
 import CardView from 'react-native-cardview'
@@ -39,6 +39,7 @@ const HomeScreen = () => {
   useFocusEffect(
     useCallback(() => {
       showLoader();
+      checkSession();
       setTimeout(() => {
         fetchUserData();
       }, 300);
@@ -76,14 +77,14 @@ const HomeScreen = () => {
     }
   }
 
-  const copyToClipboard = (password:string) => {
+  const copyToClipboard = (password: string) => {
     Clipboard.setString(password);
   }
 
-const fetchCopiedText = async () => {
+  const fetchCopiedText = async () => {
     const text = await Clipboard.getString();
     setCopiedText(text);
-};
+  };
 
   const renderItem = (data: any) => {
     return (
@@ -105,7 +106,7 @@ const fetchCopiedText = async () => {
               <Text style={{ color: 'white', fontSize: 15 }}>{data.item.password}</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={()=>{copyToClipboard(data.item.password)}}>
+          <TouchableOpacity onPress={() => { copyToClipboard(data.item.password) }}>
             <Icon1 name="copy" size={40} color="white" />
           </TouchableOpacity>
         </View>
@@ -127,8 +128,26 @@ const fetchCopiedText = async () => {
         </View>
       );
     }
-
   };
+
+  const logout = async () => {
+    appStore.setCurrentUser(null);
+    await setAsValue("currentUser", '');
+    await setAsValue('LastUpdatedTime', null);
+    await setAsValue('isTrusted', "0");
+    await setAsValue("isTrusted", "false");
+    appStore.setTrustedDevice(false);
+    auth.logout();
+  }
+
+  const checkSession = async () => {
+    if (!appStore.isTrustedDevice) {
+      const isTimeOut = await isExpire();
+      if (isTimeOut) {
+        logout();
+      }
+    }
+  }
 
   const onLeftIconClick = () => {
     auth.onProfileClick();

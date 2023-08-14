@@ -10,7 +10,7 @@ import CardView from 'react-native-cardview'
 import Clipboard from '@react-native-clipboard/clipboard';
 import Icon1 from 'react-native-vector-icons/Feather';
 import { EmptyFour } from '@images';
-import { searchType, getAsValue, checkPasswordStrength } from '@utils';
+import { searchType, getAsValue, checkPasswordStrength, setAsValue, isExpire } from '@utils';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 
@@ -35,12 +35,34 @@ const SearchScreen = () => {
         navigation.navigate('AddPasswordScreen');
     }
 
+    const logout = async () => {
+        appStore.setCurrentUser(null);
+        await setAsValue("currentUser", '');
+        await setAsValue('LastUpdatedTime', null);
+        await setAsValue('isTrusted', "0");
+        appStore.setTrustedDevice(false);
+        await setAsValue("isTrusted", "false");
+        auth.logout();
+    }
+
+    const checkSession = async () => {
+        if (!appStore.isTrustedDevice) {
+            const isTimeOut = await isExpire();
+            if (isTimeOut) {
+                logout();
+            }
+        }
+    }
+
+
     const onTypeSelect = (item) => {
+        checkSession();
         setType(item.label);
     }
 
     useFocusEffect(
         useCallback(() => {
+            checkSession();
             fetchUserData();
         }, []),
     );

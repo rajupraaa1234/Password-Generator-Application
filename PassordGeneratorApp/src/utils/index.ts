@@ -9,6 +9,7 @@ import { PasswordType ,
         getAllPasswordStrength, 
         checkPasswordStrength,
         searchType,
+        isExpire,
  } from "./util";
 
 export {
@@ -27,4 +28,5 @@ export {
     getAllPasswordList,
     getAllPasswordStrength,
     searchType,
+    isExpire,
 }

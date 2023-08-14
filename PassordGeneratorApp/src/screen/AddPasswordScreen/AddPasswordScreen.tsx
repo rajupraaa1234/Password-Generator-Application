@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { View, Text, BackHandler, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Header, CustomButton, DropdownComponent, CustomPopup } from '@components';
 import { useNavigation } from '@react-navigation/native';
@@ -6,8 +6,9 @@ import TextInput from "react-native-text-input-interactive";
 import Icon1 from 'react-native-vector-icons/Feather';
 import CheckBox from '@react-native-community/checkbox';
 import { AuthContext } from '@context/auth-context';
+import { useFocusEffect } from '@react-navigation/native';
 import { Toast } from "native-base";
-import { generatePassword, dropDownData, newPasswordList } from '@utils';
+import { generatePassword, dropDownData, newPasswordList, isExpire } from '@utils';
 import { useStore } from '@mobx/hooks';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Slider from "react-native-slider";
@@ -58,6 +59,14 @@ const AddPasswordScreen = () => {
         };
     }, []);
 
+
+    useFocusEffect(
+        useCallback(() => {
+            checkSession();
+        }, []),
+    );
+
+
     const onLeftIconClick = () => {
         handleBackButtonClick();
     }
@@ -75,6 +84,27 @@ const AddPasswordScreen = () => {
         setTimeout(() => {
             onEnd();
         }, 700);
+    }
+
+    const logout = async () => {
+        appStore.setCurrentUser(null);
+        await setAsValue("currentUser", '');
+        await setAsValue('LastUpdatedTime', null);
+        await setAsValue('isTrusted', "0");
+        await setAsValue("isTrusted", "false");
+        appStore.setTrustedDevice(false);
+        handleBackButtonClick();
+        auth.logout();
+    }
+
+
+    const checkSession = async () => {
+        if (!appStore.isTrustedDevice) {
+            const isTimeOut = await isExpire();
+            if (isTimeOut) {
+                logout();
+            }
+        }
     }
 
     const copyComponent = () => {
@@ -109,6 +139,7 @@ const AddPasswordScreen = () => {
     };
 
     const onGenerate = () => {
+        checkSession();
         if (siteName.length == 0 || email.length == 0) {
             if (!Toast.isActive(16)) {
                 Toast.show({
@@ -136,6 +167,7 @@ const AddPasswordScreen = () => {
         setGenerated(generatedPassword);
     }
     const onTypeSelect = (item) => {
+        checkSession();
         setType(item.label);
     }
 
@@ -173,6 +205,7 @@ const AddPasswordScreen = () => {
     }
 
     const onSaveClick = async () => {
+        checkSession();
         if (siteName.length == 0 || email.length == 0 || generated.length == 0 || type.length == 0) {
             if (!Toast.isActive(20)) {
                 Toast.show({
@@ -263,6 +296,11 @@ const AddPasswordScreen = () => {
     const onTextChanges = (value) => {
         setManualPassword(value);
         setGenerated(value);
+    }
+
+    const onAddManualClick = () => {
+        checkSession();
+        setVisible(true);
     }
 
     return (
@@ -365,7 +403,7 @@ const AddPasswordScreen = () => {
                     <CustomButton
                         width={'100%'}
                         height={45}
-                        onClick={() => { setVisible(true) }}
+                        onClick={() => { onAddManualClick() }}
                         disabled={false}
                         myStyle={{ marginLeft: 20, marginRight: 20 }}
                         text={'Add Manually'}

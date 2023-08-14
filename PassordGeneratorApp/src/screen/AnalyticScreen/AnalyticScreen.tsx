@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '@context/auth-context';
 import { EmptyFour } from '@images';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength } from '@utils';
+import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength, setAsValue, isExpire } from '@utils';
 import { useStore } from '@mobx/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,12 +20,13 @@ const AnalyticScreen = () => {
     const [countObj, setCount] = useState({});
     const [data, setData] = useState([]);
     const [passwordData, setPasswordData] = useState([]);
-    const [order,setOrder] = useState(1);   // 1 for inc   // 2 for Dec
-    const [rotate,setRotate] = useState('0deg');
+    const [order, setOrder] = useState(1);   // 1 for inc   // 2 for Dec
+    const [rotate, setRotate] = useState('0deg');
 
 
     useFocusEffect(
         useCallback(() => {
+            checkSession();
             userPasswordListData();
             fetchData();
             onFilterClick();
@@ -33,6 +34,24 @@ const AnalyticScreen = () => {
     );
 
 
+    const logout = async () => {
+        appStore.setCurrentUser(null);
+        await setAsValue("currentUser", '');
+        await setAsValue('LastUpdatedTime', null);
+        await setAsValue('isTrusted', "0");
+        await setAsValue("isTrusted", "false");
+        appStore.setTrustedDevice(false);
+        auth.logout();
+    }
+
+    const checkSession = async () => {
+        if (!appStore.isTrustedDevice) {
+            const isTimeOut = await isExpire();
+            if (isTimeOut) {
+                logout();
+            }
+        }
+    }
 
     const fetchData = async () => {
         let obj = await getAllPasswordStrength(appStore);
@@ -119,28 +138,29 @@ const AnalyticScreen = () => {
 
     }
 
-    const onFilterClick = () =>{
-            let risk = [];
-            let safe = [];
-            let weak = [];
-            passwordData.map((item)=>{
-                let str = checkPasswordStrength(item.password);
-                if(str == 1 ){
-                    risk.push(item);
-                }else if(str == 2){
-                    weak.push(item);
-                }else{
-                    safe.push(item);
-                }
-            });
-            if(order == 1){
-                setPasswordData([...safe,...weak,...risk]);
-                setRotate('0deg');
-            }else{
-                setPasswordData([...risk,...weak,...safe]);
-                setRotate('180deg');
+    const onFilterClick = () => {
+        checkSession();
+        let risk = [];
+        let safe = [];
+        let weak = [];
+        passwordData.map((item) => {
+            let str = checkPasswordStrength(item.password);
+            if (str == 1) {
+                risk.push(item);
+            } else if (str == 2) {
+                weak.push(item);
+            } else {
+                safe.push(item);
             }
-            setOrder(2/order);
+        });
+        if (order == 1) {
+            setPasswordData([...safe, ...weak, ...risk]);
+            setRotate('0deg');
+        } else {
+            setPasswordData([...risk, ...weak, ...safe]);
+            setRotate('180deg');
+        }
+        setOrder(2 / order);
     }
 
     return (
@@ -160,8 +180,8 @@ const AnalyticScreen = () => {
             </View>
             <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 45 }}>
                 <Text style={{ fontSize: 20 }}>Analysis</Text>
-                <TouchableOpacity  onPress={onFilterClick}>
-                   <Icon style={{transform:[{rotate: rotate}]}} name="filter-outline" color={'black'} size={30} />
+                <TouchableOpacity onPress={onFilterClick}>
+                    <Icon style={{ transform: [{ rotate: rotate }] }} name="filter-outline" color={'black'} size={30} />
                 </TouchableOpacity>
             </View>
 

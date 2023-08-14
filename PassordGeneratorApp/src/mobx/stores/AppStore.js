@@ -5,6 +5,8 @@ export class AppStore {
     @observable appName = 'Password Generator';
     @observable skipped = false;
     @observable currentUser = '';
+    @observable isTrustedDevice = false;
+    @observable lastUpdatedTime = null;
     @action setApprName(data) {
         this.appName = data;
     }
@@ -15,5 +17,13 @@ export class AppStore {
 
     @action setCurrentUser(user) {
         this.currentUser = user;
+    }
+
+    @action setLastUpdateTime(data) {
+        this.lastUpdatedTime = data;
+    }
+
+    @action setTrustedDevice(data) {
+        this.isTrustedDevice = data;
     }
 }

@@ -1,4 +1,4 @@
-import { getAsValue } from '@utils';
+import { getAsValue , setAsValue } from '@utils';
 const PasswordType = () => {
   const passwordType = ["Pririty", "Entertainment", "Study", "Social Media", "E-Commerce", "Payment", "Others"];
   return passwordType;
@@ -223,6 +223,21 @@ const getAllPasswordList = async (appStore:any) =>{
  return arr;
 }
 
+const isExpire = async () =>{
+  const lastime =await getAsValue('LastUpdatedTime');
+  let diff = Math.abs(Date.parse(lastime) - new Date());
+  if(diff>0){
+    let minutes = Math.floor(diff / 1000 / 60);
+    if(minutes>=1){
+      return true;
+    }else{
+      await setAsValue('LastUpdatedTime',`${new Date()}`);
+      return false;
+    }
+  }
+  return false;
+}
+
 
 export {
   PasswordType,
@@ -235,4 +250,5 @@ export {
   getAllPasswordStrength,
   getAllPasswordList,
   searchType,
+  isExpire,
 }

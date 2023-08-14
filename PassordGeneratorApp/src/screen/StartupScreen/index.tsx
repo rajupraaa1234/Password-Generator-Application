@@ -7,6 +7,7 @@ const StartupScreen = () => {
     const { appStore } = useStore();
     useEffect(() => {
         (async () => {
+            checkForTrusted();
             const skipped = await getAsValue('skip');
             const loggined = await getAsValue('currentUser');
             if (loggined) {
@@ -16,10 +17,17 @@ const StartupScreen = () => {
             }
         })();
     })
+    const checkForTrusted = async () => {
+        const trusted = await getAsValue("isTrusted");
+        if (trusted == "1") {
+            appStore.setTrustedDevice(true);
+        } else {
+            appStore.setTrustedDevice(false);
+        }
+    }
     return (
         <Fragment />
     )
-
 }
 
 export default StartupScreen;
