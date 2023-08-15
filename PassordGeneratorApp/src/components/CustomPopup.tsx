@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import {
-    Button, SafeAreaView, StyleSheet, Modal,
+    Text, StyleSheet, Modal,
     View, Dimensions
 } from "react-native";
 import { CustomButton  } from '@components';
@@ -11,11 +11,9 @@ import TextInput from "react-native-text-input-interactive";
 const { width } = Dimensions.get("window");
 
 export const CustomPopup = (props: any) => {
-    const { isVisible, onClick, onTextChange } = props;
+    const { isVisible, onClick, onTextChange , myStyle , children , placeholder , name , value} = props;
 
-    const [inputValue, setInputValue] = useState("");
     const onTextChanges = (value: any) => {
-        setInputValue(value);
         onTextChange(value);
     }
 
@@ -26,8 +24,10 @@ export const CustomPopup = (props: any) => {
             presentationStyle="overFullScreen"
         >
             <View style={styles.viewWrapper}>
-                <View style={styles.modalView}>
-                    <TextInput  textInputStyle={{ width: '80%', marginLeft: 0 }} originalColor="#9370db" placeholder="enter your password" value={inputValue} onChangeText={onTextChanges} />
+                <View style={[styles.modalView,{...myStyle}]}>
+                    <Text style={{fontSize:20,padding:5,alignSelf:'center',justifyContent:'center',marginBottom:10}}>{name}</Text>
+                    <TextInput  textInputStyle={{ width: '80%', marginLeft: 0 }} originalColor="#9370db" placeholder={placeholder} value={value} onChangeText={onTextChanges} />
+                    {children}
                     <View style={{marginTop:10}}>
                         <CustomButton
                             width={150}
@@ -47,7 +47,9 @@ export const CustomPopup = (props: any) => {
 CustomPopup.defaultProps = {
     isVisible: false,
     onClick: () => { },
-    onTextChange: () => { }
+    placeholder : 'enter your password',
+    onTextChange: () => { },
+    name : 'Reset Password'
 }
 
 
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
         elevation: 5,
         transform: [{ translateX: -(width * 0.4) },
         { translateY: -90 }],
-        height: 180,
+        height: 200,
         width: width * 0.8,
         backgroundColor: "#fff",
         borderRadius: 7,

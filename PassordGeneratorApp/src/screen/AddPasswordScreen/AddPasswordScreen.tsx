@@ -338,7 +338,7 @@ const AddPasswordScreen = () => {
                     </Text>
                     <DropdownComponent data={dropDownData} style={{ height: 40, width: 150, color: 'blue' }} name={'select type'} onChanged={onTypeSelect} />
                 </View>
-                <CustomPopup isVisible={isVisible} onClick={onPopupClose} onTextChange={onTextChanges} />
+                <CustomPopup isVisible={isVisible} onClick={onPopupClose} value={manualyPassword} onTextChange={onTextChanges} placeholder={'Enter your password'}  name={'Add Password!'}/>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View style={style.CheckBoxStyle}>
                         <CheckBox
