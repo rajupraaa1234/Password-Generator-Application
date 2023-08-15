@@ -8,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { UserPlaceHolder } from '@images';
 import TextInput from "react-native-text-input-interactive";
 import { Toast } from "native-base";
+import {APP_VERSION} from '@env';
 import ToggleSwitch from 'toggle-switch-react-native'
 import { setAsValue, getAsValue, isExpire } from '@utils';
 import Icon2 from 'react-native-vector-icons/AntDesign';
@@ -172,7 +173,11 @@ const ProfileScreen = () => {
                        <Icon2 name="right" color="gray" size={25} />
                     </TouchableOpacity>
                 </View>
-                 <TouchableOpacity style={style.LogoutBtnContainer} onPress={logout}>
+                 <View style={style.VersionContainer}>
+                    <Text style={{ color: 'black', fontSize: 15 }}>App Version </Text>
+                    <Text style={{ color: 'black', fontSize: 15 }}> {APP_VERSION}</Text>
+                </View>
+                <TouchableOpacity style={style.LogoutBtnContainer} onPress={logout}>
                     <Text style={{ color: 'black', fontSize: 20 }}>Logout</Text>
                 </TouchableOpacity>
             </View>
@@ -195,6 +200,18 @@ const style = StyleSheet.create({
         marginRight: 20,
         bottom: 0,
         right: 0,
+    },
+    VersionContainer: {
+        height: 40,
+        position: 'absolute',
+        marginLeft : 20,
+        justifyContent: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        marginBottom: 100,
+        flexDirection:'row',
+        bottom: 0,
+        left: 0,
     },
     btnBoundry: {
         height: 50,
