@@ -10,6 +10,7 @@ import { PasswordType ,
         checkPasswordStrength,
         searchType,
         isExpire,
+        getUserPasswordInHtmlFormate,
  } from "./util";
 
 export {
@@ -29,4 +30,5 @@ export {
     getAllPasswordStrength,
     searchType,
     isExpire,
+    getUserPasswordInHtmlFormate,
 }

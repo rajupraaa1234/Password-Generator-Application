@@ -243,6 +243,53 @@ const isExpire = async () =>{
 }
 
 
+const getUserPasswordInHtmlFormate = data =>{
+  return `
+  <!DOCTYPE html>
+            <html>
+            <style>
+                * {
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box
+                }
+              ul {
+                display: flex;
+                flex-wrap: wrap;
+                list-style: none;
+              }
+            
+              li {
+                flex: 0 150px;
+                height: 40px;
+                margin: 10px;
+                
+              }
+            </style>
+            <body>
+                <div id="hide" style="font-size:18px;font-family:BalooThambi-Regular;">
+                    <ul>
+                      <li>Searial No.</li>
+                      <li>Platform Name</li>
+                      <li>Username</li>
+                      <li>Password</li>
+                    </ul>
+                    ${data.map((item, index) => {
+                       return `<div>
+                       <ul>
+                         <li>${index + 1}</li>
+                         <li>${item.site}</li>
+                         <li>${item.email}</li>
+                         <li>${item.password}</li>
+                       </ul>
+                     </div>`
+                    }).join('')}</div>
+            </body>
+            </html>
+  `
+}
+
+
 export {
   PasswordType,
   emptyPasswordData,
@@ -255,4 +302,5 @@ export {
   getAllPasswordList,
   searchType,
   isExpire,
+  getUserPasswordInHtmlFormate,
 }
