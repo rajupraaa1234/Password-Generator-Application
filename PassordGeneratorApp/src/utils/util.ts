@@ -225,14 +225,18 @@ const getAllPasswordList = async (appStore:any) =>{
 
 const isExpire = async () =>{
   const lastime =await getAsValue('LastUpdatedTime');
-  let diff = Math.abs(Date.parse(lastime) - new Date());
-  if(diff>0){
-    let minutes = Math.floor(diff / 1000 / 60);
-    if(minutes>=10){
-      return true;
-    }else{
-      await setAsValue('LastUpdatedTime',`${new Date()}`);
-      return false;
+  if(!lastime  || lastime?.length == 0){
+    await setAsValue('LastUpdatedTime',`${new Date()}`);
+  }else{
+    let diff = Math.abs(Date.parse(lastime) - new Date());
+    if(diff>0){
+      let minutes = Math.floor(diff / 1000 / 60);
+      if(minutes>=1){
+        return true;
+      }else{
+        await setAsValue('LastUpdatedTime',`${new Date()}`);
+        return false;
+      }
     }
   }
   return false;

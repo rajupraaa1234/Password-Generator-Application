@@ -26,7 +26,6 @@ const AnalyticScreen = () => {
 
     useFocusEffect(
         useCallback(() => {
-            checkSession();
             userPasswordListData();
             fetchData();
             onFilterClick();
@@ -37,7 +36,7 @@ const AnalyticScreen = () => {
     const logout = async () => {
         appStore.setCurrentUser(null);
         await setAsValue("currentUser", '');
-        await setAsValue('LastUpdatedTime', null);
+        await setAsValue('LastUpdatedTime', '');
         await setAsValue('isTrusted', "0");
         await setAsValue("isTrusted", "false");
         appStore.setTrustedDevice(false);
@@ -48,7 +47,9 @@ const AnalyticScreen = () => {
         if (!appStore.isTrustedDevice) {
             const isTimeOut = await isExpire();
             if (isTimeOut) {
-                logout();
+                setTimeout(()=>{
+                    logout();
+                },200)
             }
         }
     }

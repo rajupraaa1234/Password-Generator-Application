@@ -53,6 +53,7 @@ const LoginScreen = (props: any) => {
         } else {
           showLoader();
           await setAsValue("currentUser", username);
+          appStore.setTrustedDevice(false);
           auth.login();
           Toast.show({
             id: 14,

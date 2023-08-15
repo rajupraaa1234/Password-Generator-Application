@@ -38,8 +38,8 @@ const HomeScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      showLoader();
       checkSession();
+      showLoader();
       setTimeout(() => {
         fetchUserData();
       }, 300);
@@ -133,7 +133,7 @@ const HomeScreen = () => {
   const logout = async () => {
     appStore.setCurrentUser(null);
     await setAsValue("currentUser", '');
-    await setAsValue('LastUpdatedTime', null);
+    await setAsValue('LastUpdatedTime', '');
     await setAsValue('isTrusted', "0");
     await setAsValue("isTrusted", "false");
     appStore.setTrustedDevice(false);
@@ -144,7 +144,9 @@ const HomeScreen = () => {
     if (!appStore.isTrustedDevice) {
       const isTimeOut = await isExpire();
       if (isTimeOut) {
-        logout();
+        setTimeout(()=>{
+          logout();
+        },200)
       }
     }
   }

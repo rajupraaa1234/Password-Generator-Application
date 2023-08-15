@@ -38,7 +38,7 @@ const SearchScreen = () => {
     const logout = async () => {
         appStore.setCurrentUser(null);
         await setAsValue("currentUser", '');
-        await setAsValue('LastUpdatedTime', null);
+        await setAsValue('LastUpdatedTime', '');
         await setAsValue('isTrusted', "0");
         appStore.setTrustedDevice(false);
         await setAsValue("isTrusted", "false");
@@ -49,7 +49,9 @@ const SearchScreen = () => {
         if (!appStore.isTrustedDevice) {
             const isTimeOut = await isExpire();
             if (isTimeOut) {
-                logout();
+                setTimeout(()=>{
+                    logout();
+                  },200)
             }
         }
     }
