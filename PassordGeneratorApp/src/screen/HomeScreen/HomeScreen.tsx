@@ -85,6 +85,7 @@ const HomeScreen = () => {
 
   const copyToClipboard = (item) => {
     setVisible(true);
+    checkSession();
     setShareData(item);
     setButtonSelect(0);
   }
@@ -145,6 +146,7 @@ const HomeScreen = () => {
     setVisible(true);
     setShareData(item);
     setButtonSelect(1);
+    checkSession();
   }
   const renderItem = (data: any) => {
     return (
