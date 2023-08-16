@@ -11,7 +11,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Icon1 from 'react-native-vector-icons/Feather';
 import { EmptyFour } from '@images';
 import { searchType, getAsValue, checkPasswordStrength, setAsValue, isExpire } from '@utils';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
@@ -100,7 +100,7 @@ const SearchScreen = () => {
                 cornerRadius={8}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <View>
-                        <Icon name="amazon" size={40} color="white" />
+                       <Icon2 name="security" color="white" size={30} />
                     </View>
                     <View>
                         <View style={{ flexDirection: 'column' }}>

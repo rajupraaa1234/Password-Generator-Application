@@ -6,9 +6,9 @@ import { EmptyFour } from '@images';
 import CardView from 'react-native-cardview'
 import { useNavigation } from '@react-navigation/native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Icon from 'react-native-vector-icons/AntDesign';
-import Icon1 from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useStore } from '@mobx/hooks';
 import { AuthContext } from '@context/auth-context';
 
@@ -97,8 +97,9 @@ const HomeScreen = () => {
         style={style.cardContainer}
         cornerRadius={8}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View>
-            <Icon name="amazon" size={40} color="white" />
+          <View style={{justifyContent:'center',alignSelf:'center',flexDirection:'column',alignContent:'center'}}>
+            <Icon1 name="security" color="white" size={30} />
+            <Text style={{ color: 'white', fontSize: 10 }}>{data.item.site}</Text>
           </View>
           <View>
             <View style={{ flexDirection: 'column' }}>
@@ -107,7 +108,7 @@ const HomeScreen = () => {
             </View>
           </View>
           <TouchableOpacity onPress={() => { copyToClipboard(data.item.password) }}>
-            <Icon1 name="copy" size={40} color="white" />
+            <Icon name="copy" size={40} color="white" />
           </TouchableOpacity>
         </View>
 
