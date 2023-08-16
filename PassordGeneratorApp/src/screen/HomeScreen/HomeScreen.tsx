@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useCallback, useState } from "react";
-import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, SectionList, SafeAreaView, Dimensions, ActivityIndicator, StyleSheet, TouchableOpacity, Share } from 'react-native';
 import { emptyPasswordData, getAsValue, isExpire, setAsValue } from '@utils';
-import { Header } from '@components';
+import { Header, CustomPopup } from '@components';
 import { EmptyFour } from '@images';
 import CardView from 'react-native-cardview'
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Toast } from "native-base";
+import ShareIcon from 'react-native-vector-icons/FontAwesome';
 import { useStore } from '@mobx/hooks';
 import { AuthContext } from '@context/auth-context';
 
@@ -18,7 +20,11 @@ const HomeScreen = () => {
   const { appStore } = useStore();
   const [copiedText, setCopiedText] = useState('');
   const navigation = useNavigation();
+  const [isVisible, setVisible] = useState(false);
+  const [Mypassword, setPassword] = useState('');
   const [loader, setLoader] = useState(false);
+  const [shareData, setShareData] = useState({});
+  const [buttonSelect, setButtonSelect] = useState(0);     // 0 for copy // 1 for share
   const [listData, setListData] = useState(emptyPasswordData);
 
   const onStart = () => {
@@ -77,8 +83,10 @@ const HomeScreen = () => {
     }
   }
 
-  const copyToClipboard = (password: string) => {
-    Clipboard.setString(password);
+  const copyToClipboard = (item) => {
+    setVisible(true);
+    setShareData(item);
+    setButtonSelect(0);
   }
 
   const fetchCopiedText = async () => {
@@ -86,6 +94,58 @@ const HomeScreen = () => {
     setCopiedText(text);
   };
 
+  const onTextChanges = (value) => {
+    setPassword(value);
+  }
+
+
+  const onPopupClose = async () => {
+    setVisible(false);
+    setPassword('');
+    if (Mypassword.length > 0) {
+      const currUser = appStore.currentUser;
+      const userData = await getAsValue(currUser);
+      const { password } = JSON.parse(userData);
+      if (password != Mypassword) {
+        if (!Toast.isActive(30)) {
+          Toast.show({
+            id: 30,
+            description: "Password Incorrect !",
+            placement: "bottom",
+          });
+        }
+      } else {
+        if (buttonSelect == 0) {
+          Clipboard.setString(shareData.password);
+        } else {
+          sharePassword(shareData);
+        }
+      }
+    }
+  }
+
+  const sharePassword = async (item) => {
+    const user = appStore.currentUser;
+    let shareData = `Hi ${user} \nI am sharing your ${item.site} strong credentials with you from PasswordGenerator App please be carefull ❗ for your credential while sharing. \nUsername : ${item.email} \nPassword : ${item.password}`
+    const option = {
+      subject: '',
+      dialogTitle: '',
+    };
+    const content = {
+      title: 'App link',
+      message: shareData,
+    };
+    try {
+      await Share.share(content, option);
+    } catch (error) { console.log(error) }
+  }
+
+
+  const onShareClick = async (item) => {
+    setVisible(true);
+    setShareData(item);
+    setButtonSelect(1);
+  }
   const renderItem = (data: any) => {
     return (
       <CardView
@@ -97,19 +157,24 @@ const HomeScreen = () => {
         style={style.cardContainer}
         cornerRadius={8}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <View style={{justifyContent:'center',alignSelf:'center',flexDirection:'column',alignContent:'center'}}>
+          <View style={{ justifyContent: 'center', alignSelf: 'center', flexDirection: 'column', alignContent: 'center' }}>
             <Icon1 name="security" color="white" size={30} />
             <Text style={{ color: 'white', fontSize: 10 }}>{data.item.site}</Text>
           </View>
           <View>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', alignContent: 'center', height: '100%' }}>
               <Text style={{ color: 'white', fontSize: 15 }}>{data.item.email}</Text>
               <Text style={{ color: 'white', fontSize: 15 }}>{data.item.password}</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => { copyToClipboard(data.item.password) }}>
-            <Icon name="copy" size={40} color="white" />
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'column', height: '100%', justifyContent: 'center', alignSelf: 'center', alignContent: 'center' }}>
+            <TouchableOpacity onPress={() => { copyToClipboard(data.item) }}>
+              <Icon name="copy" size={30} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => { onShareClick(data.item) }} style={{ marginTop: 10 }}>
+              <ShareIcon name="share" size={30} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
 
       </CardView>
@@ -145,9 +210,9 @@ const HomeScreen = () => {
     if (!appStore.isTrustedDevice) {
       const isTimeOut = await isExpire();
       if (isTimeOut) {
-        setTimeout(()=>{
+        setTimeout(() => {
           logout();
-        },200)
+        }, 200)
       }
     }
   }
@@ -166,6 +231,7 @@ const HomeScreen = () => {
       <View>
         <Header name={'Password'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
         {loader && <ActivityIndicator animating={loader} size="large" color="#0000ff" />}
+        <CustomPopup isVisible={isVisible} onClick={onPopupClose} value={Mypassword} onTextChange={onTextChanges} placeholder={'Enter your password'} name={'Verify , Enter your password to share/copy'} />
         <View style={{ marginHorizontal: 10, marginBottom: 170 }}>
           <SectionList
             sections={listData}

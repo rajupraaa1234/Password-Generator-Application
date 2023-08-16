@@ -25,7 +25,7 @@ export const CustomPopup = (props: any) => {
         >
             <View style={styles.viewWrapper}>
                 <View style={[styles.modalView,{...myStyle}]}>
-                    <Text style={{fontSize:20,padding:5,alignSelf:'center',justifyContent:'center',marginBottom:10}}>{name}</Text>
+                    <Text style={{fontSize:18,padding:5,alignSelf:'center',justifyContent:'center',marginBottom:10 , textAlign:'center'}}>{name}</Text>
                     <TextInput  textInputStyle={{ width: '80%', marginLeft: 0 }} originalColor="#9370db" placeholder={placeholder} value={value} onChangeText={onTextChanges} />
                     {children}
                     <View style={{marginTop:10}}>
