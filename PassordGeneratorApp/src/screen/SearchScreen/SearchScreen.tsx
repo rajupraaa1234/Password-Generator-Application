@@ -8,7 +8,6 @@ import TextInput from "react-native-text-input-interactive";
 import { useFocusEffect } from '@react-navigation/native';
 import CardView from 'react-native-cardview'
 import Clipboard from '@react-native-clipboard/clipboard';
-import Icon1 from 'react-native-vector-icons/Feather';
 import { EmptyFour } from '@images';
 import { searchType, getAsValue, checkPasswordStrength, setAsValue, isExpire } from '@utils';
 import Icon2 from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -49,9 +48,9 @@ const SearchScreen = () => {
         if (!appStore.isTrustedDevice) {
             const isTimeOut = await isExpire();
             if (isTimeOut) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     logout();
-                  },200)
+                }, 200)
             }
         }
     }
@@ -99,20 +98,18 @@ const SearchScreen = () => {
                 style={style.cardContainer}
                 cornerRadius={8}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <View>
-                       <Icon2 name="security" color="white" size={30} />
+                    <View style={{ height: '100%', justifyContent: 'center' }}>
+                        <Icon2 name="security" color="white" size={30} />
                     </View>
-                    <View>
+                    <View style={{ height: '100%', justifyContent: 'center' }}>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ color: 'white', fontSize: 15 }}>{data.site}</Text>
                             <Text style={{ color: 'white', fontSize: 15 }}>{data.email}</Text>
                             <Text style={{ color: 'white', fontSize: 10 }}>{data.password}</Text>
-
                         </View>
                     </View>
-                    <TouchableOpacity onPress={() => { copyToClipboard(data.password) }}>
-                        <Icon1 name="copy" size={40} color="white" />
-                    </TouchableOpacity>
+                    <View style={{ marginRight: 10, height: '100%', justifyContent: 'center' }}>
+                        <Text style={{ color: 'white', fontSize: 15 }}>{data.site}</Text>
+                    </View>
                 </View>
 
             </CardView>
