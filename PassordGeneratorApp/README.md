@@ -1,79 +1,32 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+A password generator is a tool that creates random passwords for you. These utilities make the password creation process much easier by preventing you from making common mistakes. 
 
-# Getting Started
+The most important thing to remember about password generators is that they don’t store any passwords. Instead, they create long strings of random characters that are highly difficult for humans to remember but also challenging to crack.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+All your password secure at one place in one app.
+Helps protect your personal and sensitive information from unauthorized access.
+Passwords are the first line of defense against cybercriminals and their unauthorized access to your personal data. Save your passord at one place.
+In This aaplication you can create strong password or custom also and manupulate also . 
+Below feature i have implemented . 
+     1. You can created your password using AI tools . It Will generate strong password automatically  . You can also add custom password as well . 
+     2. You can save your password in this application and only you can able to see beacause strongly authentication has been implemented in this application . 
+     3. Login / Sighup Feature has been implemented you can register with your username & password with this you can secure your passwords very safely .
+     4. You can also export all the password data in pdf formate for that also you need credential to generate the pdf or share .
+     5. You can share your passwords to your secure place and save it whereever you want . 
+     6. You can manage your password data . (Add/Remove/Modify )
+     7. AI Analysis algorithm implemented it will predict your password strneth like Safe/Risk/Weak .
+     8. You can reset your Authentication password in case of any risk . 
+     9. The most important & Interesting feature i have implemented is Trusted Device . Trusted Device meanse if you kept this app open in foreground or background more than 10 min it will auto logout for security pupose .
+     10. You mark as trusted device also (System won't logout automatically after 10 min once you mark trusted device ) . 
+     11. AI Analysis will show as graphical model so that you can easly identify which platform's password is weak/safe/Risk and you can modify it . 
+     12. You can search your password accoding to your choice (Platform Type / Password / Username ) 
 
-## Step 1: Start the Metro Server
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
-To start Metro, run the following command from the _root_ of your React Native project:
+     Adding ScreenShot 
 
-```bash
-# using npm
-npm start
 
-# OR using Yarn
-yarn start
-```
 
-## Step 2: Start your Application
+     
+     
+<img width="447" alt="Screenshot 2023-08-17 at 2 34 40 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/e1be2504-14c3-408d-a2c8-da740e766a98">
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
