@@ -5,11 +5,13 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '@context/auth-context';
 import { EmptyFour } from '@images';
 import { useFocusEffect } from '@react-navigation/native';
-import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength, setAsValue, isExpire } from '@utils';
+import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength, setAsValue, isExpire, getAsValue } from '@utils';
 import { useStore } from '@mobx/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/AntDesign';
+import { Toast } from "native-base";
+
 
 
 
@@ -47,9 +49,9 @@ const AnalyticScreen = () => {
         if (!appStore.isTrustedDevice) {
             const isTimeOut = await isExpire();
             if (isTimeOut) {
-                setTimeout(()=>{
+                setTimeout(() => {
                     logout();
-                },200)
+                }, 200)
             }
         }
     }
@@ -86,6 +88,113 @@ const AnalyticScreen = () => {
         setPasswordData(data);
     }
 
+    const onDeleteClick = async (item) => {
+        const user = appStore.currentUser;
+        let userData = await getAsValue(`${user}`);
+        let { data, password } = JSON.parse(userData);
+        let { Pririty, Entertainment, Study, Others, ECommerce, SocialMedia, Payment } = data;
+        let isSearched = false;
+        let idx = -1;
+        Pririty.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            Pririty.data.splice(idx, 1);
+        }
+
+        Entertainment.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            Entertainment.data.splice(idx, 1);
+        }
+
+        Study.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            Study.data.splice(idx, 1);
+        }
+
+        Others.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            Others.data.splice(idx, 1);
+        }
+
+        ECommerce.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            ECommerce.data.splice(idx, 1);
+        }
+
+        SocialMedia.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            SocialMedia.data.splice(idx, 1);
+        }
+
+
+        Payment.data.map((myitem, index) => {
+            if (JSON.stringify(myitem) === JSON.stringify(item)) {
+                isSearched = true;
+                idx = index;
+            }
+        });
+        if (isSearched) {
+            Payment.data.splice(idx, 1);
+        }
+
+        let updatedUserData = {
+            user: user,
+            password: password,
+            data: {
+                Pririty: Pririty,
+                Entertainment: Entertainment,
+                Study: Study,
+                Others: Others,
+                ECommerce: ECommerce,
+                SocialMedia: SocialMedia,
+                Payment: Payment
+            }
+        }
+        await setAsValue(`${user}`, JSON.stringify(updatedUserData));
+        userPasswordListData();
+        fetchData();
+        onFilterClick();
+        if (!Toast.isActive(21)) {
+            Toast.show({
+                id: 21,
+                description: "Password deleted...",
+                placement: "bottom",
+            });
+        }
+    }
+
+    const onUpdate = (item) => {
+
+    }
 
 
     const renderItem = (item, index) => {
@@ -104,7 +213,12 @@ const AnalyticScreen = () => {
                     <Text style={{ fontSize: 10 }}>{item.password}</Text>
                 </View>
                 <View style={{ right: 0, position: 'absolute', marginRight: 10 }}>
-                    <Icon2 name="right" color="gray" size={25} />
+                    <TouchableOpacity onPress={() => onDeleteClick(item)}>
+                        <Icon2 name="delete" color="red" size={20} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ marginTop: 10 }} onPress={() => onUpdate(item)}>
+                        <Icon1 name="update" color="green" size={25} />
+                    </TouchableOpacity>
                 </View>
             </View>
         )
