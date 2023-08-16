@@ -159,7 +159,7 @@ const HomeScreen = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ justifyContent: 'center', alignSelf: 'center', flexDirection: 'column', alignContent: 'center' }}>
             <Icon1 name="security" color="white" size={30} />
-            <Text style={{ color: 'white', fontSize: 10 }}>{data.item.site}</Text>
+            <Text style={{ color: 'white', fontSize: 10 ,textAlign:'center'}}>{data.item.site}</Text>
           </View>
           <View>
             <View style={{ flexDirection: 'column', justifyContent: 'center', alignSelf: 'center', alignContent: 'center', height: '100%' }}>

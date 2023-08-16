@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { Header, PieChartComponent } from '@components';
+import { Header, PieChartComponent, CustomPopup } from '@components';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '@context/auth-context';
 import { EmptyFour } from '@images';
@@ -8,6 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getAllPasswordStrength, getAllPasswordList, checkPasswordStrength, setAsValue, isExpire, getAsValue } from '@utils';
 import { useStore } from '@mobx/hooks';
 import Icon from 'react-native-vector-icons/Ionicons';
+import TextInput from "react-native-text-input-interactive";
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import { Toast } from "native-base";
@@ -21,9 +22,14 @@ const AnalyticScreen = () => {
     const { appStore } = useStore();
     const [countObj, setCount] = useState({});
     const [data, setData] = useState([]);
+    const [isVisible, setVisible] = useState(false);
+    const [username, setUsername] = useState('');
+    const [site, setSiteName] = useState('');
+    const [Password, setPassword] = useState('');
     const [passwordData, setPasswordData] = useState([]);
     const [order, setOrder] = useState(1);   // 1 for inc   // 2 for Dec
     const [rotate, setRotate] = useState('0deg');
+    const [currItem, setCurrItem] = useState({});
 
 
     useFocusEffect(
@@ -88,7 +94,7 @@ const AnalyticScreen = () => {
         setPasswordData(data);
     }
 
-    const onDeleteClick = async (item) => {
+    const onDeleteClick = async (item, type) => {
         const user = appStore.currentUser;
         let userData = await getAsValue(`${user}`);
         let { data, password } = JSON.parse(userData);
@@ -97,73 +103,129 @@ const AnalyticScreen = () => {
         let idx = -1;
         Pririty.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             Pririty.data.splice(idx, 1);
+            isSearched = false;
         }
 
         Entertainment.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             Entertainment.data.splice(idx, 1);
+            isSearched =false;
         }
 
         Study.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             Study.data.splice(idx, 1);
+            isSearched =false;
         }
 
         Others.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             Others.data.splice(idx, 1);
+            isSearched =false;
         }
 
         ECommerce.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             ECommerce.data.splice(idx, 1);
+            isSearched =false;
         }
 
         SocialMedia.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             SocialMedia.data.splice(idx, 1);
+            isSearched =false;
         }
 
 
         Payment.data.map((myitem, index) => {
             if (JSON.stringify(myitem) === JSON.stringify(item)) {
-                isSearched = true;
-                idx = index;
+                if (type == 2) {
+                    myitem.site = site,
+                        myitem.password = Password,
+                        myitem.email = username,
+                        myitem.length = Password.length
+                } else {
+                    isSearched = true;
+                    idx = index;
+                }
             }
         });
         if (isSearched) {
             Payment.data.splice(idx, 1);
+            isSearched =false;
         }
 
         let updatedUserData = {
@@ -186,14 +248,18 @@ const AnalyticScreen = () => {
         if (!Toast.isActive(21)) {
             Toast.show({
                 id: 21,
-                description: "Password deleted...",
+                description: type == 1 ? "Password deleted..." : "Cart Updated...",
                 placement: "bottom",
             });
         }
     }
 
     const onUpdate = (item) => {
-
+        setVisible(true);
+        setCurrItem(item);
+        setUsername(item.email);
+        setPassword(item.password);
+        setSiteName(item.site);
     }
 
 
@@ -213,7 +279,7 @@ const AnalyticScreen = () => {
                     <Text style={{ fontSize: 10 }}>{item.password}</Text>
                 </View>
                 <View style={{ right: 0, position: 'absolute', marginRight: 10 }}>
-                    <TouchableOpacity onPress={() => onDeleteClick(item)}>
+                    <TouchableOpacity onPress={() => onDeleteClick(item, 1)}>
                         <Icon2 name="delete" color="red" size={20} />
                     </TouchableOpacity>
                     <TouchableOpacity style={{ marginTop: 10 }} onPress={() => onUpdate(item)}>
@@ -278,6 +344,22 @@ const AnalyticScreen = () => {
         setOrder(2 / order);
     }
 
+    const onPopupClose = () => {
+        setVisible(false);
+        if (username.length >= 3 && site.length >= 3 && Password.length >= 3) {
+            onDeleteClick(currItem, 2);
+        } else {
+            if (!Toast.isActive(22)) {
+                Toast.show({
+                    id: 22,
+                    description: "Cart details not valid , please add proper details",
+                    placement: "bottom",
+                });
+            }
+        }
+    }
+
+
     return (
         <View style={{ flexDirection: 'column' }}>
             <Header name={'Security'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
@@ -299,7 +381,10 @@ const AnalyticScreen = () => {
                     <Icon style={{ transform: [{ rotate: rotate }] }} name="filter-outline" color={'black'} size={30} />
                 </TouchableOpacity>
             </View>
-
+            <CustomPopup isVisible={isVisible} onClick={onPopupClose} value={username} onTextChange={(text: string) => { setUsername(text) }} placeholder="enter username" myStyle={{ height: 300 }} name={'Update Cart!'}>
+                <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={site} placeholder="enter platform" onChangeText={(text) => { setSiteName(text) }} />
+                <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={Password} placeholder="enter password" onChangeText={(text) => { setPassword(text) }} />
+            </CustomPopup>
             <View style={{ marginHorizontal: 30, marginTop: 15, justifyContent: 'center', alignContent: 'center', height: 400 }}>
                 <FlatList
                     data={passwordData}
