@@ -30,3 +30,36 @@ Below feature i have implemented .
      
 <img width="447" alt="Screenshot 2023-08-17 at 2 34 40 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/e1be2504-14c3-408d-a2c8-da740e766a98">
 
+
+<img width="452" alt="Screenshot 2023-08-17 at 2 35 38 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/949739ea-681f-4a6c-9eb6-85651aa06277">
+
+
+<img width="451" alt="Screenshot 2023-08-17 at 2 36 07 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/b84f8913-cb47-41ca-ae67-2791ac73a4f5">
+
+
+<img width="455" alt="Screenshot 2023-08-17 at 2 36 28 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/585b9e01-a4de-4dc4-b45e-de6e4f969670">
+
+
+<img width="449" alt="Screenshot 2023-08-17 at 2 36 54 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/215578af-a1ce-4168-bb68-a1f7e1a68395">
+
+
+<img width="454" alt="Screenshot 2023-08-17 at 2 37 36 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/be8b308a-986f-48d4-844a-34c55a76d3a6">
+
+
+<img width="451" alt="Screenshot 2023-08-17 at 2 37 58 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/d074a226-7f48-446d-aa98-d45550ca8a71">
+
+
+<img width="453" alt="Screenshot 2023-08-17 at 2 38 42 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/ccd55f81-5caf-42ed-ac19-d5e950e6b222">
+
+
+<img width="454" alt="Screenshot 2023-08-17 at 2 39 16 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/a80afdfb-560a-4969-9ec6-087750a4ff39">
+
+
+<img width="450" alt="Screenshot 2023-08-17 at 2 39 37 AM" src="https://github.com/rajupraaa1234/Password-Generator-Application/assets/48593134/ac7824ca-b85a-4b77-b223-610664681a3e">
+
+
+
+
+
+
+
