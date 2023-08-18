@@ -216,10 +216,12 @@ const SearchScreen = () => {
         <View style={{ flex: 1, flexDirection: 'column' }}>
             <Header name={'Search'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
             <View style={{ marginTop: 10, marginLeft: 15, flexDirection: 'row', alignItems: 'center' }}>
-                <View>
-                    <TextInput originalColor="#9370db" textInputStyle={{ width: 220 }} placeholder="Search..." value={value} onChangeText={onTextChanges} />
+                <View style={{flex:0.6}}>
+                    <TextInput originalColor="#9370db" textInputStyle={{ width: '100%' }} placeholder="Search..." value={value} onChangeText={onTextChanges} />
                 </View>
-                <DropdownComponent data={searchType} style={{ height: 50, width: 150, color: '#9370db', marginRight: 15 }} name={'select type'} onChanged={onTypeSelect} />
+                <View style={{flex:0.4}}>
+                    <DropdownComponent data={searchType} style={{ height: 50, width: '100%', color: '#9370db' }} name={'select type'} onChanged={onTypeSelect} />
+                </View>
             </View>
             <View style={{ marginTop: 10, flex: 1, alignContent: 'center', justifyContent: 'center', marginHorizontal: 15 }}>
                 <FlatList

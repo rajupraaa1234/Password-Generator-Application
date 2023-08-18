@@ -138,25 +138,26 @@ const LoginScreen = (props: any) => {
       <SafeAreaView style={style.container}>
         <ScrollView>
           <View>
-            <View style={{ marginTop: 30, marginLeft: 5 }}>
+            <View style={{ marginTop: 30, marginLeft: 30 }}>
               <Text style={style.loginText}>{page == 0 ? 'Login' : 'SignUp'}</Text>
             </View>
-            <View style={{ marginTop: 30 }}>
-              <TextInput placeholder="username" value={username} onChangeText={(text: string) => { setUserName(text) }} />
+            <View style={{ marginTop: 30 , marginLeft: 30 ,marginRight:30}}>
+              <TextInput placeholder="username" textInputStyle={{ width: '100%'}} value={username} onChangeText={(text: string) => { setUserName(text) }} />
             </View>
-            <View style={{ marginTop: 30 }}>
-              <TextInput placeholder="password" value={password} onChangeText={(text: string) => { setPassword(text) }} />
+            <View style={{ marginTop: 30,marginLeft: 30 ,marginRight:30 }}>
+              <TextInput placeholder="password"textInputStyle={{ width: '100%'}}  value={password} onChangeText={(text: string) => { setPassword(text) }} />
             </View>
             <View style={{ marginTop: 60 }}>
               <CustomButton
-                width={Dimensions.get('screen').width - 38}
+                width={Dimensions.get('screen').width - 50 }
                 height={45}
                 onClick={() => { onSubmit() }}
                 disabled={submitBtn}
+                myStyle={{marginLeft: 30 ,marginRight:30}}
                 text={page == 0 ? 'Login' : 'SignUp'}
               />
             </View>
-            <TouchableOpacity disabled={PageButton} style={{ marginTop: 10, marginLeft: 5 }} onPress={() => {
+            <TouchableOpacity disabled={PageButton} style={{ marginTop: 20, marginLeft: 30 }} onPress={() => {
               if (page === 0) {
                 setPage(1);
               } else {

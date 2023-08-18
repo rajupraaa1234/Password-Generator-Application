@@ -312,7 +312,7 @@ const AnalyticScreen = () => {
 
     const renderEmptyView = () => {
         return (
-            <View style={{ width: '95%', justifyContent: 'center', alignContent: 'center', alignSelf: 'center' }}>
+            <View style={{ width: '95%', justifyContent: 'center', alignContent: 'center', alignSelf: 'center',height:'100%' }}>
                 <EmptyFour width={'100%'} height={220} />
             </View>
         );
@@ -361,40 +361,47 @@ const AnalyticScreen = () => {
 
 
     return (
-        <View style={{ flexDirection: 'column' }}>
-            <Header name={'Security'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
-            <PieChartComponent data={data} />
-            <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-evenly' }}>
-                <View style={[style.boxContainer, { borderColor: '#65D16D' }]}>
-                    {getType(countObj?.safe, 'Safe')}
+        <View style={{ flexDirection: 'column' , flex:1}}>
+            <View style={{flex:0.6}}>
+                <Header name={'Security'} leftIcon="user" rightIcon="plus" leftClick={() => { onLeftIconClick() }} rightClick={() => { onRightIconClick() }} />
+                <View style={{justifyContent:'center',width:'100%'}}>
+                    <PieChartComponent data={data} />
                 </View>
-                <View style={[style.boxContainer, { borderColor: '#EC9D3F' }]}>
-                    {getType(countObj?.weak, 'Weak')}
+                
+                
+                    <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'space-evenly' }}>
+                        <View style={[style.boxContainer, { borderColor: '#65D16D' }]}>
+                            {getType(countObj?.safe, 'Safe')}
+                        </View>
+                        <View style={[style.boxContainer, { borderColor: '#EC9D3F' }]}>
+                            {getType(countObj?.weak, 'Weak')}
+                        </View>
+                        <View style={[style.boxContainer, { borderColor: '#F00' }]}>
+                            {getType(countObj?.risk, 'Risk')}
+                        </View>
+                    </View>
+                <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 45 }}>
+                    <Text style={{ fontSize: 20 }}>Analysis</Text>
+                    <TouchableOpacity onPress={onFilterClick}>
+                        <Icon style={{ transform: [{ rotate: rotate }] }} name="filter-outline" color={'black'} size={30} />
+                    </TouchableOpacity>
                 </View>
-                <View style={[style.boxContainer, { borderColor: '#F00' }]}>
-                    {getType(countObj?.risk, 'Risk')}
-                </View>
+                <CustomPopup isVisible={isVisible} onClick={onPopupClose} value={username} onTextChange={(text: string) => { setUsername(text) }} placeholder="enter username" myStyle={{ height: 300 }} name={'Update Cart!'}>
+                    <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={site} placeholder="enter platform" onChangeText={(text) => { setSiteName(text) }} />
+                    <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={Password} placeholder="enter password" onChangeText={(text) => { setPassword(text) }} />
+                </CustomPopup>
             </View>
-            <View style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 45 }}>
-                <Text style={{ fontSize: 20 }}>Analysis</Text>
-                <TouchableOpacity onPress={onFilterClick}>
-                    <Icon style={{ transform: [{ rotate: rotate }] }} name="filter-outline" color={'black'} size={30} />
-                </TouchableOpacity>
+             <View style={{ marginHorizontal: 30,flex:0.4, marginTop: 65, width:'90%',height:'100%',justifyContent: 'center', alignContent: 'center', alignSelf: 'center'}}>
+                    <FlatList
+                        data={passwordData}
+                        renderItem={({ item, index }) => renderItem(item, index)}
+                        keyExtractor={(item, index) => `${index}`}
+                        showsHorizontalScrollIndicator={false}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={renderEmptyView}
+                    />
             </View>
-            <CustomPopup isVisible={isVisible} onClick={onPopupClose} value={username} onTextChange={(text: string) => { setUsername(text) }} placeholder="enter username" myStyle={{ height: 300 }} name={'Update Cart!'}>
-                <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={site} placeholder="enter platform" onChangeText={(text) => { setSiteName(text) }} />
-                <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 10 }} originalColor="#9370db" value={Password} placeholder="enter password" onChangeText={(text) => { setPassword(text) }} />
-            </CustomPopup>
-            <View style={{ marginHorizontal: 30, marginTop: 15, justifyContent: 'center', alignContent: 'center', height: 400 }}>
-                <FlatList
-                    data={passwordData}
-                    renderItem={({ item, index }) => renderItem(item, index)}
-                    keyExtractor={(item, index) => `${index}`}
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                    ListEmptyComponent={renderEmptyView}
-                />
-            </View>
+            
         </View>
     )
 

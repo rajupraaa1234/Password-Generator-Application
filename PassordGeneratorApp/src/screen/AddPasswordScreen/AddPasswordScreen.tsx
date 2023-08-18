@@ -304,7 +304,7 @@ const AddPasswordScreen = () => {
     }
 
     return (
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{ flex: 1, flexDirection: 'column' , justifyContent:'center' ,alignContent:'center'}}>
             <Header leftIcon={'backward'} leftClick={() => { onLeftIconClick() }} name="Create Password" isRight={false} isLeft={true} />
             <View style={style.container}>
                 <View style={[style.inputBox, { marginTop: 20 }]}>
@@ -315,8 +315,8 @@ const AddPasswordScreen = () => {
                 </View>
                 <View style={style.line} />
                 <View style={[style.inputBox, { marginTop: 40, flexDirection: 'row' }]}>
-                    <TextInput originalColor="#9370db" textInputStyle={{ width: '90%', marginLeft: 0 }} editable={false} placeholder="Generated Password" value={generated} onChangeText={(text: string) => { }} />
-                    {copyComponent()}
+                    <TextInput originalColor="#9370db"  editable={false} placeholder="Generated Password" value={generated} onChangeText={(text: string) => { }} />
+                    {/* {copyComponent()} */}
                 </View>
                 <View style={[style.line, { marginTop: 40 }]}>
                     <Slider
@@ -419,7 +419,10 @@ const style = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        marginHorizontal: 10
+        marginHorizontal: 20,
+        justifyContent:'space-evenly' ,alignContent:'center',
+        
+
     },
     inputBox: {
         justifyContent: 'center',

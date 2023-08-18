@@ -226,11 +226,11 @@ const ProfileScreen = () => {
         <View style={{ flex: 1, flexDirection: 'column' }}>
             <Header leftIcon={'backward'} leftClick={handleBackButtonClick} name={'Profile'} isRight={false} isLeft={true} />
             <View style={{ position: 'relative', flex: 1 }}>
-                <View style={{ height: 150, width: 150, justifyContent: 'center', alignSelf: 'center', marginTop: 30, borderRadius: 20 }}>
+                <View style={{ height: 150, width: 150, justifyContent: 'center', alignSelf: 'center', marginTop: 50, borderRadius: 20 }}>
                     <Image source={UserPlaceHolder} resizeMode="contain" style={{ height: '100%', width: '100%', borderRadius: 20 }} />
                 </View>
                 <View style={{ justifyContent: 'center', alignSelf: 'center', marginTop: 20 }}>
-                    <Text style={{ fontSize: 25 }}>Hey {user}</Text>
+                    <Text style={{ fontSize: 25 }}>Hey, {user}</Text>
                 </View>
                 <CustomPopup isVisible={isVisible} onClick={onPopupClose} onTextChange={onTextChanges} value={oldPassword} myStyle={{ height: 250 }} placeholder={'Enter your old paasword'} >
                     <TextInput textInputStyle={{ width: '80%', marginLeft: 0, marginTop: 20 }} originalColor="#9370db" placeholder="Enter your new paasword" value={newPassword} onChangeText={onNewPassChanges} />
@@ -312,13 +312,13 @@ const style = StyleSheet.create({
         left: 0,
     },
     btnBoundry: {
-        height: 50,
+        height: 60,
         width: '90%',
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#7b68ee',
         alignSelf: 'center',
-        marginTop: 20,
+        marginTop: 30,
         position: 'relative',
         flexDirection: 'row',
         alignContent: 'center',
