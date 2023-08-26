@@ -10,12 +10,14 @@ import TextInput from "react-native-text-input-interactive";
 import { Toast } from "native-base";
 import ReactNativeBlobUtil from 'react-native-blob-util'
 import RNFS from 'react-native-fs';
-import { APP_VERSION } from '@env';
+// import { APP_VERSION } from '@env';
 import ToggleSwitch from 'toggle-switch-react-native'
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { setAsValue, getAsValue, isExpire, getUserPasswordInHtmlFormate } from '@utils';
 import Icon2 from 'react-native-vector-icons/AntDesign';
 import DoneIcone from 'react-native-vector-icons/MaterialIcons';
+import { Config } from 'react-native-config';
+
 
 
 const ProfileScreen = () => {
@@ -273,7 +275,7 @@ const ProfileScreen = () => {
                 {loader && <ActivityIndicator animating={loader} size="large" color="#0000ff" />}
                 <View style={style.VersionContainer}>
                     <Text style={{ color: 'black', fontSize: 15 }}>App Version </Text>
-                    <Text style={{ color: 'black', fontSize: 15 }}> {APP_VERSION}</Text>
+                    <Text style={{ color: 'black', fontSize: 15 }}> {Config.APP_VERSION}</Text>
                 </View>
                 <TouchableOpacity style={style.LogoutBtnContainer} onPress={logout}>
                     <Text style={{ color: 'black', fontSize: 20 }}>Logout</Text>

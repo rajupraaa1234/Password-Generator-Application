@@ -1,10 +1,14 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
+project.ext.envConfigFiles = [
+   productionrelease: ".env.production",
+   developmentrelease: ".env.development",
+]
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 react {
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '..'
@@ -73,6 +77,22 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions "default"
+    productFlavors {
+        production {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "com.passordgeneratorapp"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "com.passordgeneratorapp"
+        }
+        development {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "com.passordgeneratorapp"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "com.passordgeneratorapp"
+        }
+    }
+
     namespace "com.passordgeneratorapp"
     defaultConfig {
         applicationId "com.passordgeneratorapp"
@@ -100,6 +120,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            matchingFallbacks = ['debug', 'release']
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
